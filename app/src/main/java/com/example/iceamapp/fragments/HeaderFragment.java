@@ -22,18 +22,18 @@ public class HeaderFragment extends Fragment {
         ImageView userAvatar = view.findViewById(R.id.userAvatar);
 
         // Xử lý sự kiện nhấp
-        cartIcon.setOnClickListener(v -> loadContentFragment(new CartFragment()));
-        notificationIcon.setOnClickListener(v -> loadContentFragment(new NotificationFragment()));
-        userAvatar.setOnClickListener(v -> loadContentFragment(new UserFragment()));
+//        cartIcon.setOnClickListener(v -> loadContentFragment(new CartFragment()));
+//        notificationIcon.setOnClickListener(v -> loadContentFragment(new NotificationFragment()));
+//        userAvatar.setOnClickListener(v -> loadContentFragment(new UserFragment()));
 
         return view;
     }
 
     // Hàm thay thế Fragment nội dung
-    private void loadContentFragment(Fragment fragment) {
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.contentFragmentContainer, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
+//    private void loadContentFragment(Fragment fragment) {
+//        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+//        transaction.replace(R.id.contentFragmentContainer, fragment);
+//        transaction.addToBackStack(null);
+//        transaction.commit();
+//    }
 }

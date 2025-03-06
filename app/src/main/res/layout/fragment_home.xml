@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#FFFFFF"
+    android:background="@color/boldpink"
     android:padding="16dp">
 
     <!-- SearchView -->
@@ -14,94 +15,12 @@
         android:queryHint="Tìm kiếm"
         android:background="@drawable/rounded_search_background"
         android:padding="8dp"
-        android:layout_margin="16dp" />
-    <LinearLayout
+        android:layout_marginBottom="16dp"/>
+
+    <!-- RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#FF4081"
-    android:padding="16dp"
-    android:gravity="center">
+        android:layout_height="match_parent"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Giảm 20% cho món yêu thích"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp" />
 </LinearLayout>
-
-
-<TextView
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:text="Phần bổ nhánh"
-android:textSize="18sp"
-android:textColor="#000000"
-android:layout_marginTop="16dp" />
-
-<LinearLayout
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:orientation="vertical"
-android:layout_marginTop="8dp">
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#FFE1E1"
-    android:padding="12dp"
-    android:layout_marginBottom="8dp">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Socola - Vani"
-        android:textSize="16sp" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Rp 20.000"
-        android:textSize="14sp"
-        android:layout_gravity="end" />
-</LinearLayout>
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#FFE1E1"
-    android:padding="12dp"
-    android:layout_marginBottom="8dp">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cherry - Dâu tây"
-        android:textSize="16sp" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Rp 20.000"
-        android:textSize="14sp"
-        android:layout_gravity="end" />
-</LinearLayout>
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#FFE1E1"
-    android:padding="12dp">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Socola Đậm Đắng"
-        android:textSize="16sp" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Rp 23.000"
-        android:textSize="14sp"
-        android:layout_gravity="end" />
-</LinearLayout>
-</LinearLayout>
-    </LinearLayout>

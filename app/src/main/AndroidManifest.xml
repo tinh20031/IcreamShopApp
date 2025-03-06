@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Cấp quyền sử dụng Internet -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -11,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.IceamApp"
         tools:targetApi="31">
-        <!-- Splash Screen là màn hình khởi động -->
+
+        <!-- Splash Screen (Màn hình khởi động) -->
         <activity
             android:name=".SplashScreen.SplashActivity"
             android:exported="true"
@@ -21,16 +25,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Main Activity (Màn hình chính sau Splash) -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-
-            </intent-filter>
         </activity>
+
+        <!-- Fragment Home Activity (Nếu cần thiết) -->
+        <activity
+            android:name=".Fragment_homeActivity"
+            android:exported="true">
+        </activity>
+
+        <!-- Các Activity khác -->
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".fragments.CartActivity" />

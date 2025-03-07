@@ -14,7 +14,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.iceamapp.R;
-import com.example.iceamapp.fragments.CartActivity;
+import com.example.iceamapp.CartActivity;
 
 public class HeaderFragment extends Fragment {
 

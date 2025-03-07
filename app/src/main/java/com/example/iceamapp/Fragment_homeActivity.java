@@ -1,7 +1,15 @@
 package com.example.iceamapp;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,6 +22,7 @@ import com.example.iceamapp.adapter.IceCreamAdapter;
 import com.example.iceamapp.entity.Category;
 import com.example.iceamapp.entity.IceCream;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -26,6 +35,8 @@ public class Fragment_homeActivity extends AppCompatActivity {
     private RecyclerView categoryRecyclerView;
     private IceCreamAdapter iceCreamAdapter;
     private CategoryAdapter categoryAdapter;
+    private EditText searchEditText;
+    private ImageView searchButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +53,62 @@ public class Fragment_homeActivity extends AppCompatActivity {
         categoryRecyclerView.setHasFixedSize(true);
         categoryRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
-        // Gọi API lấy danh sách kem
+        // Ánh xạ EditText và nút tìm kiếm
+        searchEditText = findViewById(R.id.searchEditText);
+        searchButton = findViewById(R.id.searchButton);
+
+        // Khởi tạo adapter với danh sách rỗng ban đầu
+        iceCreamAdapter = new IceCreamAdapter(new ArrayList<>());
+        recyclerView.setAdapter(iceCreamAdapter);
+
+        // Gọi API lấy danh sách kem mặc định
         loadIceCreams();
 
         // Gọi API lấy danh sách danh mục
         loadCategories();
+
+        // Sự kiện khi nhấn nút tìm kiếm
+        searchButton.setOnClickListener(v -> {
+            String query = searchEditText.getText().toString().trim();
+            Log.d("SearchDebug", "Search button clicked, query: " + query);
+            if (!query.isEmpty()) {
+                searchIceCreams(query);
+            }
+        });
+
+        // Sự kiện khi nhấn Enter trên bàn phím
+        searchEditText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                    (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN)) {
+                String query = searchEditText.getText().toString().trim();
+                Log.d("SearchDebug", "Enter pressed, query: " + query);
+                if (!query.isEmpty()) {
+                    searchIceCreams(query);
+                }
+                return true;
+            }
+            return false;
+        });
+
+        // Tìm kiếm theo thời gian thực khi người dùng nhập
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String query = s.toString().trim();
+                Log.d("SearchDebug", "Text changed: " + query);
+                if (!query.isEmpty()) {
+                    searchIceCreams(query);
+                } else {
+                    loadIceCreams(); // Tải lại danh sách mặc định khi xóa hết
+                }
+            }
+        });
     }
 
     private void loadIceCreams() {
@@ -93,6 +155,29 @@ public class Fragment_homeActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<Category>> call, Throwable t) {
                 Log.e("API", "Failed to load categories: " + t.getMessage());
+            }
+        });
+    }
+
+    private void searchIceCreams(String name) {
+        IceCreamApiService apiService = RetrofitClient.getIceCreamApiService();
+        apiService.searchIceCream(name).enqueue(new Callback<List<IceCream>>() {
+            @Override
+            public void onResponse(Call<List<IceCream>> call, Response<List<IceCream>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<IceCream> iceCreams = response.body();
+                    Log.d("SearchAPI", "Search Success: " + iceCreams.size() + " items");
+                    iceCreamAdapter = new IceCreamAdapter(iceCreams);
+                    recyclerView.setAdapter(iceCreamAdapter);
+                    iceCreamAdapter.notifyDataSetChanged(); // Đảm bảo RecyclerView cập nhật
+                } else {
+                    Log.e("SearchAPI", "Search Error: " + response.code() + " - " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<IceCream>> call, Throwable t) {
+                Log.e("SearchAPI", "API Error: " + t.getMessage(), t);
             }
         });
     }

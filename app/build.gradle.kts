@@ -43,6 +43,7 @@ dependencies {
     implementation (libs.logging.interceptor)
     implementation (libs.recyclerview)
     implementation (libs.glide)
+    implementation (libs.picasso)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

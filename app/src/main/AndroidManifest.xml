@@ -38,10 +38,11 @@
             android:exported="true">
         </activity>
 
+
         <!-- Các Activity khác -->
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".fragments.CartActivity" />
+        <activity android:name=".CartActivity" />
 
     </application>
 

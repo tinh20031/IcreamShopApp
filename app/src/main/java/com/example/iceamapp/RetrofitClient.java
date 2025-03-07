@@ -1,6 +1,7 @@
 package com.example.iceamapp;
 
 import com.example.iceamapp.Services.CartApiService; // Thêm import cho CartApiService
+import com.example.iceamapp.Services.CategoryApiService;
 import com.example.iceamapp.Services.IceCreamApiService;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -39,5 +40,9 @@ public class RetrofitClient {
     // Service cho CartApiService
     public static CartApiService getCartApiService() {
         return getRetrofitInstance().create(CartApiService.class);
+    }
+
+    public static CategoryApiService getCategoryApiService() {
+        return getRetrofitInstance().create(CategoryApiService.class);
     }
 }

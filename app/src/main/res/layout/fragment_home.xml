@@ -1,26 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/boldpink"
-    android:padding="16dp">
+    android:fillViewport="true"
+    android:background="#F5F5F5">
 
-    <!-- SearchView -->
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/searchView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:queryHint="Tìm kiếm"
-        android:background="@drawable/rounded_search_background"
-        android:padding="8dp"
-        android:layout_marginBottom="16dp"/>
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:fitsSystemWindows="true">
 
-    <!-- RecyclerView -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        <!-- Import Header -->
+        <include layout="@layout/fragment_header" />
 
-</LinearLayout>
+        <!-- Thanh tìm kiếm -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:elevation="4dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_rounded">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_search"
+                android:layout_gravity="center_vertical" />
+
+            <EditText
+                android:layout_width="333dp"
+                android:layout_height="48dp"
+                android:background="@null"
+                android:hint="Tìm kiếm" />
+
+        </LinearLayout>
+
+        <!-- Banner quảng cáo -->
+        <ViewFlipper
+            android:id="@+id/bannerFlipper"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:background="@drawable/banner"
+            android:clipToPadding="false"
+            android:padding="10dp"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Danh sách loại kem -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tất cả các loại kem"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/categoryRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:orientation="horizontal"
+            android:nestedScrollingEnabled="false"
+            android:layout_marginBottom="16dp"/>
+
+
+
+        <!-- Danh sách phổ biến -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Phổ biến nhất"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="10dp"/>
+
+        <!-- ProgressBar hiển thị khi đang tải dữ liệu -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone"/>
+
+        <!-- RecyclerView hiển thị danh sách kem -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"/>
+
+    </LinearLayout>
+</ScrollView>

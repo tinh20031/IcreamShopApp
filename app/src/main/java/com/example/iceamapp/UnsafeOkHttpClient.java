@@ -1,45 +1,43 @@
 package com.example.iceamapp;
 
-import javax.net.ssl.*;
+import java.security.cert.CertificateException;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import okhttp3.OkHttpClient;
-import java.security.cert.X509Certificate;
-import java.util.concurrent.TimeUnit;
 
 public class UnsafeOkHttpClient {
     public static OkHttpClient getUnsafeOkHttpClient() {
         try {
-            // Tạo TrustManager để bỏ qua SSL
+            // Tạo TrustManager để bỏ qua xác thực chứng chỉ
             final TrustManager[] trustAllCerts = new TrustManager[]{
                     new X509TrustManager() {
                         @Override
-                        public void checkClientTrusted(X509Certificate[] chain, String authType) {}
+                        public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {}
 
                         @Override
-                        public void checkServerTrusted(X509Certificate[] chain, String authType) {}
+                        public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {}
 
                         @Override
-                        public X509Certificate[] getAcceptedIssuers() {
-                            return new X509Certificate[]{};
+                        public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                            return new java.security.cert.X509Certificate[]{};
                         }
                     }
             };
 
-            // Tạo SSLContext bỏ qua xác minh
-            final SSLContext sslContext = SSLContext.getInstance("TLS");
+            // Khởi tạo SSLContext với TrustManager trên
+            final SSLContext sslContext = SSLContext.getInstance("SSL");
             sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
 
-            // Tạo SSLSocketFactory
-            final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+            // Tạo OkHttpClient và bỏ qua xác thực SSL
+            return new OkHttpClient.Builder()
+                    .sslSocketFactory(sslContext.getSocketFactory(), (X509TrustManager) trustAllCerts[0])
+                    .hostnameVerifier((hostname, session) -> true) // Bỏ qua kiểm tra hostname
+                    .build();
 
-            OkHttpClient.Builder builder = new OkHttpClient.Builder();
-            builder.sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0]);
-            builder.hostnameVerifier((hostname, session) -> true);
-            builder.connectTimeout(30, TimeUnit.SECONDS);
-            builder.readTimeout(30, TimeUnit.SECONDS);
-
-            return builder.build();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 }
+

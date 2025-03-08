@@ -7,6 +7,8 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.example.iceamapp.CartActivity;
+import com.example.iceamapp.Fragment_homeActivity;
+import com.example.iceamapp.LoginActivity;
 
 public class SplashActivity extends Activity {
     @Override
@@ -15,7 +17,7 @@ public class SplashActivity extends Activity {
 
         // Chuyển sang HomeActivity sau 2 giây
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            startActivity(new Intent(SplashActivity.this, CartActivity.class));
+            startActivity(new Intent(SplashActivity.this, LoginActivity.class));
             finish(); // Đóng SplashActivity
         }, 2000);
     } }

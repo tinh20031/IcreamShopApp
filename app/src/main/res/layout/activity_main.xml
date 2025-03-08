@@ -6,12 +6,12 @@
     android:orientation="vertical">
 
     <!-- Header Fragment -->
-    <FrameLayout
+  <!--  <FrameLayout
         android:id="@+id/headerFragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <!-- Content Fragment -->
+    &lt;!&ndash; Content Fragment &ndash;&gt;
     <FrameLayout
         android:id="@+id/contentFragmentContainer"
         android:layout_width="match_parent"
@@ -20,6 +20,10 @@
     <FrameLayout
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"/>-->
+    <include
+        android:id="@+id/headerLayout"
+        layout="@layout/header_layout"/>
+
 
 </LinearLayout>

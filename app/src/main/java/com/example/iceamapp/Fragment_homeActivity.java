@@ -1,7 +1,9 @@
 package com.example.iceamapp;
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,6 +33,18 @@ public class Fragment_homeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_home);
+
+        // Xử lý sự kiện click vào icon giỏ hàng
+        View headerView = findViewById(R.id.headerLayout);
+        if (headerView != null) {
+            ImageView cartIcon = headerView.findViewById(R.id.cartIcon);
+            if (cartIcon != null) {
+                cartIcon.setOnClickListener(v -> {
+                    Intent intent = new Intent(Fragment_homeActivity.this, CartActivity.class);
+                    startActivity(intent);
+                });
+            }
+        }
 
         // Ánh xạ RecyclerView kem
         recyclerView = findViewById(R.id.recyclerView);

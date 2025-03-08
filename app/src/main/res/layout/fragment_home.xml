@@ -11,9 +11,9 @@
         android:orientation="vertical"
         android:padding="16dp"
         android:fitsSystemWindows="true">
-
-        <!-- Import Header -->
-        <include layout="@layout/fragment_header" />
+        <include
+            android:id="@+id/headerLayout"
+            layout="@layout/header_layout"/>
 
         <!-- Thanh tìm kiếm -->
         <LinearLayout
@@ -92,6 +92,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"/>
+
 
     </LinearLayout>
 </ScrollView>

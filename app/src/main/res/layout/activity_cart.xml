@@ -6,8 +6,6 @@
     android:fitsSystemWindows="true">
 
 
-<!-- Import Header -->
-    <include layout="@layout/fragment_header" />
 
     <!-- Tiêu đề Giỏ hàng & nút Back -->
     <LinearLayout

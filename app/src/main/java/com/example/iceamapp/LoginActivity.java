@@ -111,7 +111,7 @@ public class LoginActivity extends AppCompatActivity {
                     User user = response.body();
                     if (user != null) {
                         // Lưu thông tin người dùng vào SharedPreferences hoặc session
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, Fragment_homeActivity.class);
                         startActivity(intent);
                         finish();  // Đóng Activity Login
                     } else {

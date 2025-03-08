@@ -12,7 +12,4 @@ public interface  CartApiService {
     @GET("api/CartApi")
     Call<List<Cart>> getAllCarts();
 
-
-
-
 }

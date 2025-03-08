@@ -27,16 +27,25 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- Main Activity (Màn hình chính sau Splash) -->
+        </activity>
+        <activity
+            android:name=".Activity.HeaderActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true"></activity> <!-- Fragment Home Activity (Nếu cần thiết) -->
+            android:exported="true"></activity>
         <activity
             android:name=".Fragment_homeActivity"
-            android:exported="true"></activity> <!-- Các Activity khác -->
+            android:exported="true"></activity>
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".CartActivity" />
+
     </application>
 
 </manifest>

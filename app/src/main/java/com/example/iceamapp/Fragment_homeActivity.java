@@ -1,5 +1,6 @@
 package com.example.iceamapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -109,6 +110,76 @@ public class Fragment_homeActivity extends AppCompatActivity {
                 }
             }
         });
+
+        // Xử lý sự kiện nhấn cho các icon trong header
+        View cartFrame = findViewById(R.id.cartFrame);
+        if (cartFrame != null) {
+            cartFrame.setOnClickListener(v -> {
+                Log.d("HomeActivity", "Cart icon clicked!");
+                Intent intent = new Intent(Fragment_homeActivity.this, CartActivity.class);
+                startActivity(intent);
+            });
+        } else {
+            Log.e("HomeActivity", "cartFrame not found!");
+        }
+
+//        View notificationFrame = findViewById(R.id.notificationFrame);
+//        if (notificationFrame != null) {
+//            notificationFrame.setOnClickListener(v -> {
+//                Log.d("HomeActivity", "Notification icon clicked!");
+//                Intent intent = new Intent(Fragment_homeActivity.this, NotificationActivity.class);
+//                startActivity(intent);
+//            });
+//        } else {
+//            Log.e("HomeActivity", "notificationFrame not found!");
+//        }
+
+//        View userFrame = findViewById(R.id.userFrame);
+//        if (userFrame != null) {
+//            userFrame.setOnClickListener(v -> {
+//                Log.d("HomeActivity", "User avatar clicked!");
+//                Intent intent = new Intent(Fragment_homeActivity.this, UserProfileActivity.class);
+//                startActivity(intent);
+//            });
+//        } else {
+//            Log.e("HomeActivity", "userFrame not found!");
+//        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Đảm bảo sự kiện nhấn hoạt động sau khi quay lại
+        setupIconListeners();
+    }
+
+    private void setupIconListeners() {
+        View cartFrame = findViewById(R.id.cartFrame);
+        if (cartFrame != null) {
+            cartFrame.setOnClickListener(v -> {
+                Log.d("HomeActivity", "Cart icon clicked!");
+                Intent intent = new Intent(Fragment_homeActivity.this, CartActivity.class);
+                startActivity(intent);
+            });
+        }
+
+//        View notificationFrame = findViewById(R.id.notificationFrame);
+//        if (notificationFrame != null) {
+//            notificationFrame.setOnClickListener(v -> {
+//                Log.d("HomeActivity", "Notification icon clicked!");
+//                Intent intent = new Intent(Fragment_homeActivity.this, NotificationActivity.class);
+//                startActivity(intent);
+//            });
+//        }
+
+//        View userFrame = findViewById(R.id.userFrame);
+//        if (userFrame != null) {
+//            userFrame.setOnClickListener(v -> {
+//                Log.d("HomeActivity", "User avatar clicked!");
+//                Intent intent = new Intent(Fragment_homeActivity.this, UserProfileActivity.class);
+//                startActivity(intent);
+//            });
+//        }
     }
 
     private void loadIceCreams() {

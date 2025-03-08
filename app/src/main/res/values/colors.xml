@@ -6,5 +6,8 @@
     <color name="boldpink">#FF6EC7</color>
     <color name="xam">#BDBBBB</color>
     <color name="splash_background">#F4DAD3</color>
+    <color name="dark_gray">#616161</color>
+    <color name="ice_cream_background">#EAF5E7</color> <!-- ✅ Thêm màu nền kem -->
+
 
 </resources>

@@ -1,19 +1,38 @@
 package com.example.iceamapp.entity;
 
-
+import com.google.gson.annotations.SerializedName;
 
 public class IceCream {
+    @SerializedName("iceCreamId")
     private int iceCreamId;
+
+    @SerializedName("name")
     private String name;
+
+    @SerializedName("description")
     private String description;
+
+    @SerializedName("price")
     private double price;
+
+    @SerializedName("stock")
     private int stock;
+
+    @SerializedName("imageUrl")
     private String imageUrl;
+
+    @SerializedName("createdAt")
     private String createdAt;
+
+    @SerializedName("categoryId")
     private int categoryId;
+
     private Category category;
 
-    // Constructor
+    // ✅ Constructor mặc định cần thiết nếu sử dụng Retrofit
+    public IceCream() {}
+
+    // ✅ Constructor đầy đủ
     public IceCream(int iceCreamId, String name, String description, double price, int stock,
                     String imageUrl, String createdAt, int categoryId, Category category) {
         this.iceCreamId = iceCreamId;
@@ -27,23 +46,42 @@ public class IceCream {
         this.category = category;
     }
 
-    // Getters và Setters
-    public int getIceCreamId() { return iceCreamId; }
-    public void setIceCreamId(int iceCreamId) { this.iceCreamId = iceCreamId; }
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-    public double getPrice() { return price; }
-    public void setPrice(double price) { this.price = price; }
-    public int getStock() { return stock; }
-    public void setStock(int stock) { this.stock = stock; }
-    public String getImageUrl() { return imageUrl; }
-    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
-    public String getCreatedAt() { return createdAt; }
-    public void setCreatedAt(String createdAt) { this.createdAt = createdAt; }
-    public int getCategoryId() { return categoryId; }
-    public void setCategoryId(int categoryId) { this.categoryId = categoryId; }
-    public Category getCategory() { return category; }
-    public void setCategory(Category category) { this.category = category; }
+    // ✅ Đổi getId() thành getIceCreamId() để thống nhất
+    public int getIceCreamId() {
+        return iceCreamId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    // ✅ Kiểm tra null trước khi gọi category
+    public Category getCategory() {
+        return category; // Trả về null nếu category == null
+    }
+
 }

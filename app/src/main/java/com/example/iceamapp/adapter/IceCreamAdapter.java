@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.iceamapp.IceCreamDetailActivity;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -19,6 +20,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.iceamapp.R;
 import com.example.iceamapp.entity.IceCream;
+import android.content.Intent;
 
 import java.util.List;
 
@@ -51,6 +53,7 @@ public class IceCreamAdapter extends RecyclerView.Adapter<IceCreamAdapter.ViewHo
         return new ViewHolder(view);
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         IceCream iceCream = iceCreams.get(position);
@@ -66,7 +69,7 @@ public class IceCreamAdapter extends RecyclerView.Adapter<IceCreamAdapter.ViewHo
                 .load(imageUrl)
                 .placeholder(R.drawable.logo)
                 .error(R.drawable.ic_launcher_background)
-                .override(300, 300) // Thử thay đổi kích thước ảnh
+                .override(300, 300)
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -77,12 +80,20 @@ public class IceCreamAdapter extends RecyclerView.Adapter<IceCreamAdapter.ViewHo
                     @Override
                     public boolean onResourceReady(@NonNull Drawable resource, Object model, @NonNull Target<Drawable> target, @NonNull DataSource dataSource, boolean isFirstResource) {
                         Log.d("GlideSuccess", "✅ Load ảnh thành công: " + imageUrl);
-                        holder.imgIceCream.setImageDrawable(resource); // Đảm bảo ảnh được hiển thị
+                        holder.imgIceCream.setImageDrawable(resource);
                         return false;
                     }
                 })
                 .into(holder.imgIceCream);
+
+        // ✅ Thêm sự kiện mở trang chi tiết sản phẩm
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), IceCreamDetailActivity.class);
+            intent.putExtra("ICE_CREAM_ID", iceCream.getIceCreamId()); // ✅ Dùng đúng phương thức
+            v.getContext().startActivity(intent);
+        });
     }
+
 
     @Override
     public int getItemCount() {

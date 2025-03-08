@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <!-- Cấp quyền sử dụng Internet -->
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -38,11 +39,13 @@
             android:exported="true">
         </activity>
 
-
         <!-- Các Activity khác -->
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".CartActivity" />
+        <activity android:name=".LoginActivity" android:exported="true" />
+        <activity android:name=".RegisterActivity" android:exported="true" />
+        <activity android:name=".CartActivity" android:exported="true" />
+
+        <!-- ✅ Thêm Activity chi tiết sản phẩm (Fix lỗi ActivityNotFoundException) -->
+        <activity android:name=".IceCreamDetailActivity" android:exported="true"/>
 
     </application>
 

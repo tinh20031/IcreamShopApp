@@ -9,6 +9,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface AuthApiService {
@@ -23,6 +24,10 @@ public interface AuthApiService {
 
     @GET("api/UserApi/{userId}")
     Call<User> getUserDetails(@Path("userId") int userId);
+
+    @PUT("api/UserApi/{userId}")
+    Call<User> updateUserDetails(@Path("userId") int userId, @Body User updatedUser);
+
 }
 
 

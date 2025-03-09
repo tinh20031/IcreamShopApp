@@ -24,6 +24,8 @@ public class User {
     @SerializedName("role")
     private String role;
 
+
+
     // Constructor
     public User(int userId, String fullName, String email, String passwordHash, String phone, String address, String role) {
         this.userId = userId;
@@ -33,6 +35,7 @@ public class User {
         this.phone = phone;
         this.address = address;
         this.role = role;
+
     }
 
     // Getter và Setter
@@ -91,4 +94,6 @@ public class User {
     public void setRole(String role){
         this.role = role;
     }
+
+
 }

@@ -16,6 +16,8 @@ public interface IceCreamApiService {
     @GET("api/IceCreamApi/{id}") // Đảm bảo đường dẫn đúng với API thực tế
     Call<IceCream> getIceCreamById(@Path("id") int id); // Lấy chi tiết kem theo ID
 
+    @GET("api/CategoryApi/{id}/ice_cream") // 🟢 Gọi API theo danh mục
+    Call<List<IceCream>> getIceCreamsByCategory(@Path("id") int categoryId);
     @GET("api/IceCreamApi/search")
     Call<List<IceCream>> searchIceCream(@Query("name") String name);
 }

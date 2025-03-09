@@ -16,15 +16,14 @@ import java.util.List;
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
     private List<Category> categoryList;
     private Context context;
-    private OnCategoryClickListener listener;
+    private OnItemClickListener listener; // Giao diện xử lý sự kiện click
 
-    public interface OnCategoryClickListener {
-        void onCategoryClick(String categoryName);
-    }
-
-    public CategoryAdapter(Context context, List<Category> categoryList, OnCategoryClickListener listener) {
+    public CategoryAdapter(Context context, List<Category> categoryList) {
         this.context = context;
         this.categoryList = categoryList;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
     }
 
@@ -40,16 +39,17 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         Category category = categoryList.get(position);
         holder.categoryName.setText(category.getName());
 
+        // Load hình ảnh bằng Glide
         Glide.with(context)
                 .load(category.getImage())
                 .placeholder(R.drawable.logo)
                 .error(R.drawable.ic_launcher_background)
                 .into(holder.categoryImage);
 
-        // Gọi sự kiện khi nhấn vào danh mục
+        // Bắt sự kiện khi nhấn vào danh mục
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
-                listener.onCategoryClick(category.getName());
+                listener.onItemClick(category);
             }
         });
     }
@@ -68,5 +68,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
             categoryImage = itemView.findViewById(R.id.categoryImage);
             categoryName = itemView.findViewById(R.id.categoryName);
         }
+    }
+
+    // 🟢 Thêm giao diện xử lý sự kiện click vào đây
+    public interface OnItemClickListener {
+        void onItemClick(Category category);
     }
 }

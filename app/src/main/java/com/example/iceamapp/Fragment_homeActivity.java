@@ -153,6 +153,26 @@ public class Fragment_homeActivity extends AppCompatActivity {
         });
     }
 
+    private void loadIceCreamsByCategory(int categoryId) {
+        IceCreamApiService apiService = RetrofitClient.getIceCreamApiService();
+        apiService.getIceCreamsByCategory(categoryId).enqueue(new Callback<List<IceCream>>() {
+            @Override
+            public void onResponse(Call<List<IceCream>> call, Response<List<IceCream>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<IceCream> iceCreams = response.body();
+                    iceCreamAdapter.updateData(iceCreams);
+                    Log.d("API", "🔹 Lấy thành công danh sách kem của danh mục ID: " + categoryId);
+                } else {
+                    Log.e("API", "⚠️ Không có sản phẩm cho danh mục ID: " + categoryId);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<IceCream>> call, Throwable t) {
+                Log.e("API", "🚨 Lỗi khi tải danh sách kem: " + t.getMessage());
+            }
+        });
+    }
 
     private void loadCategories() {
         CategoryApiService apiService = RetrofitClient.getCategoryApiService();
@@ -160,22 +180,31 @@ public class Fragment_homeActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    categoryAdapter = new CategoryAdapter(Fragment_homeActivity.this, response.body(), new CategoryAdapter.OnCategoryClickListener() {
+                    List<Category> categories = response.body();
+
+                    categoryAdapter = new CategoryAdapter(Fragment_homeActivity.this, categories);
+                    categoryRecyclerView.setAdapter(categoryAdapter);
+
+                    // 🟢 Thêm sự kiện khi nhấn vào danh mục
+                    categoryAdapter.setOnItemClickListener(new CategoryAdapter.OnItemClickListener() {
                         @Override
-                        public void onCategoryClick(String categoryName) {
-                            filterIceCreamsByCategory(categoryName);
+                        public void onItemClick(Category category) {
+                            Log.d("Category Click", "Chọn danh mục ID: " + category.getCategoryId());
+                            loadIceCreamsByCategory(category.getCategoryId()); // 🟢 Gọi API để lấy danh sách kem theo danh mục
                         }
                     });
-                    categoryRecyclerView.setAdapter(categoryAdapter);
+                } else {
+                    Log.e("API", "Không tải được danh mục");
                 }
             }
 
             @Override
             public void onFailure(Call<List<Category>> call, Throwable t) {
-                Log.e("API", "Failed to load categories: " + t.getMessage());
+                Log.e("API", "Lỗi khi tải danh mục: " + t.getMessage());
             }
         });
     }
+
 
 
     private void searchIceCreams(String name) {

@@ -16,10 +16,16 @@ import java.util.List;
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
     private List<Category> categoryList;
     private Context context;
+    private OnCategoryClickListener listener;
 
-    public CategoryAdapter(Context context, List<Category> categoryList) {
+    public interface OnCategoryClickListener {
+        void onCategoryClick(String categoryName);
+    }
+
+    public CategoryAdapter(Context context, List<Category> categoryList, OnCategoryClickListener listener) {
         this.context = context;
         this.categoryList = categoryList;
+        this.listener = listener;
     }
 
     @NonNull
@@ -34,12 +40,18 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         Category category = categoryList.get(position);
         holder.categoryName.setText(category.getName());
 
-        // Load hình ảnh bằng Glide
         Glide.with(context)
                 .load(category.getImage())
                 .placeholder(R.drawable.logo)
                 .error(R.drawable.ic_launcher_background)
                 .into(holder.categoryImage);
+
+        // Gọi sự kiện khi nhấn vào danh mục
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onCategoryClick(category.getName());
+            }
+        });
     }
 
     @Override

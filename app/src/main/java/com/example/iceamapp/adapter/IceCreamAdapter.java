@@ -1,6 +1,7 @@
 package com.example.iceamapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
@@ -20,6 +21,7 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.example.iceamapp.IceCreamDetailActivity;
 import com.example.iceamapp.R;
 import com.example.iceamapp.entity.Cart;
 import com.example.iceamapp.entity.IceCream;
@@ -96,9 +98,13 @@ public class IceCreamAdapter extends RecyclerView.Adapter<IceCreamAdapter.ViewHo
                     }
                 })
                 .into(holder.imgIceCream);
-
-        // Thêm chức năng "ADD" vào giỏ hàng
         holder.imgAddToCart.setOnClickListener(v -> addToCart(iceCream));
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), IceCreamDetailActivity.class);
+            intent.putExtra("ICE_CREAM_ID", iceCream.getIceCreamId()); // ✅ Dùng đúng phương thức
+            v.getContext().startActivity(intent);
+        });
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.iceamapp.Services;
 
 import com.example.iceamapp.entity.Cart;
+import com.example.iceamapp.entity.IceCream;
 import com.example.iceamapp.entity.Order;
 import com.example.iceamapp.entity.OrderDTO;
 
@@ -11,6 +12,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface  CartApiService {
 
@@ -27,4 +29,6 @@ public interface  CartApiService {
 
     @POST("api/CartAPI")
     Call<Void> addToCart(@Body Cart cart);
+
+
 }

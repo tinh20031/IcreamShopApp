@@ -1,40 +1,7 @@
-//package com.example.iceamapp;
-//
-//import android.content.Intent;
-//import android.os.Bundle;
-//import android.view.View;
-//import android.widget.Button;
-//import android.widget.EditText;
-//import android.widget.ImageView;
-//import android.widget.TextView;
-//
-//import androidx.appcompat.app.AppCompatActivity;
-//
-//public class LoginActivity extends AppCompatActivity {
-//
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_login); // Đảm bảo bạn đang dùng đúng file XML
-//
-//        // Tìm nút btnLoginPassword trong layout
-//        TextView tvSignupText = findViewById(R.id.tvSignupText);
-//
-//        if (tvSignupText != null){
-//            tvSignupText.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-//                    startActivity(intent);
-//                }
-//            });
-//        }
-//    }
-//}
 package com.example.iceamapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -42,7 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.iceamapp.Services.AuthApiService;
 import com.example.iceamapp.RetrofitClient;
 import com.example.iceamapp.entity.User;
@@ -63,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login); // Đảm bảo bạn đang dùng đúng file XML
+        setContentView(R.layout.activity_login); // Đảm bảo dùng đúng file XML
 
         emailEditText = findViewById(R.id.email);
         passwordEditText = findViewById(R.id.password);
@@ -71,22 +40,13 @@ public class LoginActivity extends AppCompatActivity {
         tvSignupText = findViewById(R.id.tvSignupText);
 
         // Khi người dùng click vào "Đăng ký"
-        tvSignupText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Chuyển đến Activity đăng ký
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(intent);
-            }
+        tvSignupText.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
         });
 
         // Xử lý sự kiện login
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                login();
-            }
-        });
+        loginButton.setOnClickListener(v -> login());
     }
 
     private void login() {
@@ -110,7 +70,19 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     User user = response.body();
                     if (user != null) {
-                        // Lưu thông tin người dùng vào SharedPreferences hoặc session
+                        // ✅ Lưu userId vào SharedPreferences
+                        SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putInt("userId", user.getUserId()); // Lưu userId
+                        editor.apply(); // Lưu dữ liệu vào bộ nhớ
+
+                        Log.d("LoginSuccess", "🎉 Đăng nhập thành công! Lưu userId: " + user.getUserId());
+
+                        // Kiểm tra lại xem userId có lưu thành công không
+                        int savedUserId = sharedPreferences.getInt("userId", -1);
+                        Log.d("SharedPreferences", "📌 Kiểm tra userId sau khi lưu: " + savedUserId);
+
+                        // Chuyển đến màn hình chính
                         Intent intent = new Intent(LoginActivity.this, Fragment_homeActivity.class);
                         startActivity(intent);
                         finish();  // Đóng Activity Login
@@ -118,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(LoginActivity.this, "Lỗi: Không có dữ liệu người dùng", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    // Log phản hồi từ server để kiểm tra lý do lỗi
+                    // Log phản hồi từ server để kiểm tra lỗi
                     Log.e("LoginError", "Code: " + response.code() + " Message: " + response.message());
                     try {
                         Log.e("LoginError", "Error body: " + response.errorBody().string());
@@ -128,8 +100,6 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Thông tin đăng nhập không chính xác", Toast.LENGTH_SHORT).show();
                 }
             }
-
-
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {

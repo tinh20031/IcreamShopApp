@@ -1,5 +1,4 @@
 package com.example.iceamapp;
-
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,9 +6,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-
+import android.widget.ImageView;
+import android.view.View;
 import com.example.iceamapp.Services.AuthApiService;
 import com.example.iceamapp.entity.User;
 import retrofit2.Call;
@@ -38,6 +37,17 @@ public class DetailInfoUserActivity extends AppCompatActivity {
         roleEditText = findViewById(R.id.roleEditText);
         saveButton = findViewById(R.id.saveButton);
 
+        // Ánh xạ nút Back
+        ImageView backButton = findViewById(R.id.backButton);
+
+        // Thêm sự kiện click để quay lại màn hình trước đó
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish(); // Đóng activity hiện tại
+            }
+        });
+
         sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         Retrofit retrofit = RetrofitClient.getRetrofitInstance();
         authApiService = retrofit.create(AuthApiService.class);
@@ -48,6 +58,7 @@ public class DetailInfoUserActivity extends AppCompatActivity {
         // Tải thông tin ban đầu
         loadUserInfoFromServer(); // Tải từ server thay vì chỉ từ SharedPreferences
     }
+
 
     private void loadUserInfoFromServer() {
         int userId = sharedPreferences.getInt("userId", -1);

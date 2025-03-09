@@ -44,6 +44,9 @@ public class Fragment_homeActivity extends AppCompatActivity {
     private List<Integer> bannerImages;
     private Handler bannerHandler = new Handler();
     private Runnable bannerRunnable;
+    private List<IceCream> originalIceCreamList = new ArrayList<>();
+    private List<IceCream> filteredIceCreamList = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +136,13 @@ public class Fragment_homeActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<IceCream>> call, Response<List<IceCream>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    iceCreamAdapter.updateData(response.body());
+                    originalIceCreamList.clear();
+                    originalIceCreamList.addAll(response.body());
+
+                    // Hiển thị tất cả sản phẩm ban đầu
+                    filteredIceCreamList.clear();
+                    filteredIceCreamList.addAll(originalIceCreamList);
+                    iceCreamAdapter.updateData(filteredIceCreamList);
                 }
             }
 
@@ -144,13 +153,19 @@ public class Fragment_homeActivity extends AppCompatActivity {
         });
     }
 
+
     private void loadCategories() {
         CategoryApiService apiService = RetrofitClient.getCategoryApiService();
         apiService.getAllCategories().enqueue(new Callback<List<Category>>() {
             @Override
             public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    categoryAdapter = new CategoryAdapter(Fragment_homeActivity.this, response.body());
+                    categoryAdapter = new CategoryAdapter(Fragment_homeActivity.this, response.body(), new CategoryAdapter.OnCategoryClickListener() {
+                        @Override
+                        public void onCategoryClick(String categoryName) {
+                            filterIceCreamsByCategory(categoryName);
+                        }
+                    });
                     categoryRecyclerView.setAdapter(categoryAdapter);
                 }
             }
@@ -161,6 +176,7 @@ public class Fragment_homeActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void searchIceCreams(String name) {
         IceCreamApiService apiService = RetrofitClient.getIceCreamApiService();
@@ -218,6 +234,33 @@ public class Fragment_homeActivity extends AppCompatActivity {
         });
     }
 
+    private void filterIceCreamsByCategory(String categoryName) {
+        filteredIceCreamList.clear();
+
+        Log.d("Filter", "Filtering by category: " + categoryName);
+
+        if (categoryName.equals("All")) {
+            filteredIceCreamList.addAll(originalIceCreamList);
+        } else {
+            for (IceCream iceCream : originalIceCreamList) {
+                if (iceCream.getCategory() != null &&
+                        iceCream.getCategory().getName() != null) {
+
+                    String iceCreamCategory = iceCream.getCategory().getName().trim().toLowerCase();
+                    String selectedCategory = categoryName.trim().toLowerCase();
+
+                    Log.d("Filter", "Checking: " + iceCream.getName() + " - " + iceCreamCategory + " vs " + selectedCategory);
+
+                    if (iceCreamCategory.equals(selectedCategory)) {
+                        filteredIceCreamList.add(iceCream);
+                    }
+                }
+            }
+        }
+
+        Log.d("Filter", "Filtered List Size: " + filteredIceCreamList.size());
+        iceCreamAdapter.updateData(filteredIceCreamList);
+    }
 
 
 }

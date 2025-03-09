@@ -16,6 +16,7 @@ import retrofit2.Response;
 public class IceCreamDetailActivity extends AppCompatActivity {
     private ImageView iceCreamImage;
     private TextView iceCreamName, iceCreamDescription;
+    private TextView iceCreamPrice;
 //    private Button buyButton;
     private IceCreamApiService apiService;
 
@@ -27,6 +28,8 @@ public class IceCreamDetailActivity extends AppCompatActivity {
         // Ánh xạ view
         iceCreamImage = findViewById(R.id.iceCreamImage);
         iceCreamName = findViewById(R.id.iceCreamName);
+        iceCreamPrice = findViewById(R.id.iceCreamPrice);
+
         iceCreamDescription = findViewById(R.id.iceCreamDescription);
 //        buyButton = findViewById(R.id.buyButton);
 
@@ -58,6 +61,7 @@ public class IceCreamDetailActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     IceCream iceCream = response.body();
                     iceCreamName.setText(iceCream.getName());
+                    iceCreamPrice.setText("Price: $" + String.valueOf(iceCream.getPrice()));
                     iceCreamDescription.setText(iceCream.getDescription());
                     Glide.with(IceCreamDetailActivity.this)
                             .load(iceCream.getImageUrl())

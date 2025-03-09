@@ -76,6 +76,16 @@
                     android:textSize="22sp"
                     android:textStyle="bold" />
 
+                <TextView
+                    android:id="@+id/iceCreamPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
                 <!-- Mô tả kem -->
                 <TextView
                     android:id="@+id/iceCreamDescription"

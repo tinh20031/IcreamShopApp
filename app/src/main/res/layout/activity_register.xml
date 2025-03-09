@@ -85,7 +85,7 @@
                 android:background="@drawable/custom_edittext"
                 android:drawablePadding="8dp"
                 android:hint="Password"
-                android:inputType="textPassword"
+                android:inputType="text"
                 android:padding="10dp"
                 android:textColor="@color/black"
                 tools:ignore="TouchTargetSizeCheck" />

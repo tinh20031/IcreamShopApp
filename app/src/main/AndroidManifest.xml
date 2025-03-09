@@ -46,6 +46,7 @@
         <activity android:name=".RegisterActivity" />
         <activity android:name=".CartActivity" />
         <activity android:name=".DetailInfoUserActivity"/>
+        <activity android:name=".OrderHistoryActivity"/>
 
     </application>
 

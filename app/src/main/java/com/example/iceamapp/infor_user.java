@@ -35,12 +35,12 @@ public class infor_user extends AppCompatActivity {
         });
 
 
-//        ordersItem.setOnClickListener(v -> {
-//            Log.d("Settings", "Đơn hàng clicked");
-//            // Chuyển sang trang Đơn hàng
-//            Intent intent = new Intent(infor_user.this, OrdersActivity.class);
-//            startActivity(intent);
-//        });
+        ordersItem.setOnClickListener(v -> {
+            Log.d("Settings", "Đơn hàng clicked");
+            // Chuyển sang trang Đơn hàng
+            Intent intent = new Intent(infor_user.this, OrderHistoryActivity.class);
+            startActivity(intent);
+        });
 
         logoutItem.setOnClickListener(v -> {
             Log.d("Settings", "Đăng xuất clicked");

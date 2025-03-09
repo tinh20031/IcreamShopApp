@@ -1,21 +1,27 @@
 package com.example.iceamapp.Services;
 
 import com.example.iceamapp.entity.Cart;
+import com.example.iceamapp.entity.Order;
+import com.example.iceamapp.entity.OrderDTO;
+
 import java.util.List;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
-public interface CartApiService {
+public interface  CartApiService {
 
-    // Lấy danh sách giỏ hàng
     @GET("api/CartApi")
     Call<List<Cart>> getAllCarts();
+    @GET("api/CartApi/user/{userId}")
+    Call<List<Cart>> getCartsByUserId(@Path("userId") int userId);
 
-    // Thêm sản phẩm vào giỏ hàng
-    @POST("api/CartAPI")
-    Call<Void> addToCart(@Body Cart cart);
+    @POST("api/CartApi/create-order/{userId}")
+    Call<Order> createOrderFromCart(@Path("userId") int userId);
+
+    @GET("api/OrderApi/user/{userId}")
+    Call<List<OrderDTO>> getOrdersByUser(@Path("userId") int userId);
+
 }

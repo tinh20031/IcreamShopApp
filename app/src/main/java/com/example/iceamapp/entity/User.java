@@ -3,19 +3,19 @@ package com.example.iceamapp.entity;
 import com.google.gson.annotations.SerializedName;
 
 public class User {
-    @SerializedName("user_id")  // Ánh xạ với trường JSON của API trả về
+    @SerializedName("userId")  // Ánh xạ với trường JSON của API trả về
     private int userId;
 
-    @SerializedName("full_name")  // Ánh xạ với trường JSON của API trả về
+    @SerializedName("fullName")  // Ánh xạ với trường JSON của API trả về
     private String fullName;
 
     @SerializedName("email")  // Ánh xạ với trường JSON của API trả về
     private String email;
 
-    @SerializedName("password_hash")  // Ánh xạ với trường JSON của API trả về
+    @SerializedName("passwordHash")  // Ánh xạ với trường JSON của API trả về
     private String passwordHash;
 
-    @SerializedName("phone")
+    @SerializedName("phoneNumber")
     private String phone;
 
     @SerializedName("address")

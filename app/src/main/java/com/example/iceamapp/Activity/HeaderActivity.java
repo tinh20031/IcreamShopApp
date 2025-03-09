@@ -27,5 +27,7 @@ public class HeaderActivity extends AppCompatActivity {
         } else {
             Log.e("HeaderActivity", "cartIcon not found!");
         }
+
+
     }
 }

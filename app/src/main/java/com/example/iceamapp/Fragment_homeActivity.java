@@ -134,16 +134,16 @@ public class Fragment_homeActivity extends AppCompatActivity {
 //            Log.e("HomeActivity", "notificationFrame not found!");
 //        }
 
-//        View userFrame = findViewById(R.id.userFrame);
-//        if (userFrame != null) {
-//            userFrame.setOnClickListener(v -> {
-//                Log.d("HomeActivity", "User avatar clicked!");
-//                Intent intent = new Intent(Fragment_homeActivity.this, UserProfileActivity.class);
-//                startActivity(intent);
-//            });
-//        } else {
-//            Log.e("HomeActivity", "userFrame not found!");
-//        }
+        View userFrame = findViewById(R.id.userFrame);
+        if (userFrame != null) {
+            userFrame.setOnClickListener(v -> {
+                Log.d("HomeActivity", "User avatar clicked!");
+                Intent intent = new Intent(Fragment_homeActivity.this, infor_user.class);
+                startActivity(intent);
+            });
+        } else {
+            Log.e("HomeActivity", "userFrame not found!");
+        }
     }
 
     @Override

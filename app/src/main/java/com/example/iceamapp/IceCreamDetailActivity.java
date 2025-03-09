@@ -16,7 +16,7 @@ import retrofit2.Response;
 public class IceCreamDetailActivity extends AppCompatActivity {
     private ImageView iceCreamImage;
     private TextView iceCreamName, iceCreamDescription;
-    private Button buyButton;
+//    private Button buyButton;
     private IceCreamApiService apiService;
 
     @Override
@@ -28,7 +28,7 @@ public class IceCreamDetailActivity extends AppCompatActivity {
         iceCreamImage = findViewById(R.id.iceCreamImage);
         iceCreamName = findViewById(R.id.iceCreamName);
         iceCreamDescription = findViewById(R.id.iceCreamDescription);
-        buyButton = findViewById(R.id.buyButton);
+//        buyButton = findViewById(R.id.buyButton);
 
         // Ánh xạ nút Back và xử lý sự kiện click để chuyển về HomeActivity
         ImageView btnBack = findViewById(R.id.btnBack);

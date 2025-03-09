@@ -38,7 +38,7 @@ public class CartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
-        // Ánh xạ nút Back
+        // Nút Back
         ImageView btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(v -> {
             Intent intent = new Intent(CartActivity.this, Fragment_homeActivity.class);
@@ -47,32 +47,27 @@ public class CartActivity extends AppCompatActivity {
             finish();
         });
 
-        // Ánh xạ TextView tổng tiền
+        // Ánh xạ View
         txtTotalPrice = findViewById(R.id.txtTotalPrice);
-
-        // Ánh xạ nút Đặt Ngay
         btnOrderNow = findViewById(R.id.btnOrderNow);
-
-        // Khởi tạo RecyclerView
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Gắn adapter với danh sách rỗng ban đầu
+        // Khởi tạo adapter rỗng
         cartAdapter = new CartAdapter(new ArrayList<>());
         recyclerView.setAdapter(cartAdapter);
 
-        // Tải dữ liệu giỏ hàng theo userId
+        // Load dữ liệu giỏ hàng
         loadCartDataByUserId();
 
-        // Xử lý sự kiện nhấn nút Đặt Ngay
-        btnOrderNow.setOnClickListener(v -> {
-            placeOrder();
-        });
+        // Xử lý đặt hàng
+        btnOrderNow.setOnClickListener(v -> placeOrder());
     }
 
     private void loadCartDataByUserId() {
         SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         int userId = sharedPreferences.getInt("userId", -1);
+        Log.d("CartActivity", "User ID: " + userId);
 
         if (userId == -1) {
             Log.e("CartActivity", "User not logged in or userId not found");
@@ -84,15 +79,16 @@ public class CartActivity extends AppCompatActivity {
         apiService.getCartsByUserId(userId).enqueue(new Callback<List<Cart>>() {
             @Override
             public void onResponse(Call<List<Cart>> call, Response<List<Cart>> response) {
+                Log.d("CartActivity", "Response Code: " + response.code());
+
                 if (response.isSuccessful() && response.body() != null) {
                     List<Cart> carts = response.body();
-                    Log.d("CartActivity", "API Success: " + carts.size() + " items for userId: " + userId);
+                    Log.d("CartActivity", "Cart Items Retrieved: " + carts.size());
 
                     for (Cart cart : carts) {
-                        Log.d("CartActivity", "Cart Item - Name: " + cart.getIceCreamName() +
-                                ", Image: " + cart.getImage() +
-                                ", Price: " + cart.getPrice() +
-                                ", Quantity: " + cart.getQuantity());
+                        Log.d("CartActivity", "Item: " + cart.getIceCreamName() +
+                                " | Price: " + cart.getPrice() +
+                                " | Quantity: " + cart.getQuantity());
                     }
 
                     cartAdapter = new CartAdapter(carts);
@@ -101,8 +97,16 @@ public class CartActivity extends AppCompatActivity {
                     double totalPrice = calculateTotalPrice(carts);
                     DecimalFormat decimalFormat = new DecimalFormat("#,###.## VND");
                     txtTotalPrice.setText(decimalFormat.format(totalPrice));
+
                 } else {
-                    Log.e("CartActivity", "Response Error: " + response.code() + " - " + response.message());
+                    Log.e("CartActivity", "Response Error: " + response.code());
+                    try {
+                        if (response.errorBody() != null) {
+                            Log.e("CartActivity", "Error Body: " + response.errorBody().string());
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     txtTotalPrice.setText("Không có sản phẩm trong giỏ hàng");
                 }
             }
@@ -134,29 +138,29 @@ public class CartActivity extends AppCompatActivity {
                     Toast.makeText(CartActivity.this, "Đặt hàng thành công! Order ID: " + order.getOrderId(), Toast.LENGTH_SHORT).show();
 
                     // Làm mới giao diện giỏ hàng
-                    cartAdapter = new CartAdapter(new ArrayList<>());
-                    recyclerView.setAdapter(cartAdapter);
-                    txtTotalPrice.setText("0 VND");
+                    loadCartDataByUserId();
 
                     // Chuyển hướng sang OrderHistoryActivity
                     Intent intent = new Intent(CartActivity.this, OrderHistoryActivity.class);
                     startActivity(intent);
-                    finish(); // Kết thúc CartActivity để không quay lại khi nhấn Back
+                    finish();
                 } else {
                     Log.e("CartActivity", "Order Error: " + response.code() + " - " + response.message());
                     try {
-                        String errorBody = response.errorBody() != null ? response.errorBody().string() : "Unknown error";
-                        Toast.makeText(CartActivity.this, "Lỗi khi đặt hàng: " + errorBody, Toast.LENGTH_SHORT).show();
+                        if (response.errorBody() != null) {
+                            Log.e("CartActivity", "Error Body: " + response.errorBody().string());
+                        }
                     } catch (IOException e) {
                         Log.e("CartActivity", "Error parsing error body", e);
                     }
+                    Toast.makeText(CartActivity.this, "Lỗi khi đặt hàng", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Order> call, Throwable t) {
                 Log.e("CartActivity", "Order API Error: " + t.getMessage(), t);
-                Toast.makeText(CartActivity.this, "Lỗi khi đặt hàng: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(CartActivity.this, "Lỗi khi đặt hàng", Toast.LENGTH_SHORT).show();
             }
         });
     }

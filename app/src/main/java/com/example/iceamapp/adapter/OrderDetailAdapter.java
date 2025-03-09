@@ -43,21 +43,27 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         DecimalFormat decimalFormat = new DecimalFormat("#,###.## VND");
         holder.txtPrice.setText("Giá: " + decimalFormat.format(detail.getPrice()));
 
-        // Xử lý hình ảnh Base64
+        // Xử lý hình ảnh từ URL hoặc Base64
         String imageUrl = detail.getImageUrl();
-        if (imageUrl != null && imageUrl.startsWith("data:image/jpeg;base64,")) {
-            try {
-                // Tách phần Base64 từ chuỗi "data:image/jpeg;base64,"
-                String base64Image = imageUrl.split(",")[1];
-                byte[] decodedBytes = Base64.decode(base64Image, Base64.DEFAULT);
-                Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-                holder.imgIceCream.setImageBitmap(bitmap);
-            } catch (Exception e) {
-                e.printStackTrace();
-
+        if (imageUrl != null) {
+            if (imageUrl.startsWith("data:image/jpeg;base64,")) {
+                // Xử lý hình ảnh Base64
+                try {
+                    String base64Image = imageUrl.split(",")[1];
+                    byte[] decodedBytes = Base64.decode(base64Image, Base64.DEFAULT);
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+                    holder.imgIceCream.setImageBitmap(bitmap);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                // Sử dụng Picasso để tải ảnh từ URL
+                Picasso.get()
+                        .load(imageUrl)
+                        .placeholder(R.drawable.logo) // Ảnh hiển thị khi đang tải
+                        .error(R.drawable.ic_launcher_background) // Ảnh hiển thị nếu lỗi
+                        .into(holder.imgIceCream);
             }
-        } else {
-
         }
     }
 
@@ -66,9 +72,8 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         return orderDetailList != null ? orderDetailList.size() : 0;
     }
 
-    // Class ViewHolder
+    // ViewHolder class
     static class OrderDetailViewHolder extends RecyclerView.ViewHolder {
-        // Khai báo các biến thành viên
         ImageView imgIceCream;
         TextView txtIceCreamName;
         TextView txtQuantity;
@@ -76,7 +81,6 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
 
         public OrderDetailViewHolder(@NonNull View itemView) {
             super(itemView);
-            // Ánh xạ các thành phần giao diện
             imgIceCream = itemView.findViewById(R.id.imgIceCream);
             txtIceCreamName = itemView.findViewById(R.id.txtIceCreamName);
             txtQuantity = itemView.findViewById(R.id.txtQuantity);

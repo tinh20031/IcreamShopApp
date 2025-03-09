@@ -164,20 +164,60 @@ public class Fragment_homeActivity extends AppCompatActivity {
 
     private void searchIceCreams(String name) {
         IceCreamApiService apiService = RetrofitClient.getIceCreamApiService();
+
+        if (name == null || name.trim().isEmpty()) {
+            Log.d("SearchAPI", "🔄 Từ khóa trống, tải lại danh sách mặc định.");
+            loadDefaultIceCreams();
+            return;
+        }
+
         apiService.searchIceCream(name).enqueue(new Callback<List<IceCream>>() {
+            @Override
+            public void onResponse(Call<List<IceCream>> call, Response<List<IceCream>> response) {
+                if (!response.isSuccessful()) {
+                    Log.e("SearchAPI", "❌ Lỗi API - Mã: " + response.code());
+                    return;
+                }
+
+                List<IceCream> result = response.body();
+                if (result == null || result.isEmpty()) {
+                    Log.w("SearchAPI", "⚠️ Không tìm thấy kết quả cho: " + name);
+                    iceCreamAdapter.updateData(new ArrayList<>()); // Xóa danh sách nếu không tìm thấy
+                    return;
+                }
+
+                Log.d("SearchAPI", "✅ Tìm thấy " + result.size() + " kết quả.");
+                iceCreamAdapter.updateData(result);
+            }
+
+            @Override
+            public void onFailure(Call<List<IceCream>> call, Throwable t) {
+                Log.e("SearchAPI", "🚨 Lỗi kết nối API: " + t.getMessage(), t);
+            }
+        });
+    }
+
+    // 🟢 Hàm lấy danh sách kem mặc định
+    private void loadDefaultIceCreams() {
+        IceCreamApiService apiService = RetrofitClient.getIceCreamApiService();
+        apiService.getAllIceCreams().enqueue(new Callback<List<IceCream>>() {
             @Override
             public void onResponse(Call<List<IceCream>> call, Response<List<IceCream>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     iceCreamAdapter.updateData(response.body());
+                    Log.d("LoadDefault", "✅ Danh sách mặc định được tải.");
+                } else {
+                    Log.e("LoadDefault", "❌ Không thể tải danh sách mặc định.");
                 }
             }
 
             @Override
             public void onFailure(Call<List<IceCream>> call, Throwable t) {
-                Log.e("SearchAPI", "API Error: " + t.getMessage(), t);
+                Log.e("LoadDefault", "🚨 Lỗi kết nối API: " + t.getMessage(), t);
             }
         });
     }
+
 
 
 }

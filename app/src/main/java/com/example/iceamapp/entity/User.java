@@ -3,19 +3,19 @@ package com.example.iceamapp.entity;
 import com.google.gson.annotations.SerializedName;
 
 public class User {
-    @SerializedName("user_id")  // Ánh xạ với trường JSON của API trả về
+    @SerializedName("userId")  // Ánh xạ với trường JSON của API trả về
     private int userId;
 
-    @SerializedName("full_name")  // Ánh xạ với trường JSON của API trả về
+    @SerializedName("fullName")  // Ánh xạ với trường JSON của API trả về
     private String fullName;
 
     @SerializedName("email")  // Ánh xạ với trường JSON của API trả về
     private String email;
 
-    @SerializedName("password_hash")  // Ánh xạ với trường JSON của API trả về
+    @SerializedName("passwordHash")  // Ánh xạ với trường JSON của API trả về
     private String passwordHash;
 
-    @SerializedName("phone")
+    @SerializedName("phoneNumber")
     private String phone;
 
     @SerializedName("address")
@@ -23,6 +23,8 @@ public class User {
 
     @SerializedName("role")
     private String role;
+
+
 
     // Constructor
     public User(int userId, String fullName, String email, String passwordHash, String phone, String address, String role) {
@@ -33,6 +35,7 @@ public class User {
         this.phone = phone;
         this.address = address;
         this.role = role;
+
     }
 
     // Getter và Setter
@@ -91,4 +94,6 @@ public class User {
     public void setRole(String role){
         this.role = role;
     }
+
+
 }

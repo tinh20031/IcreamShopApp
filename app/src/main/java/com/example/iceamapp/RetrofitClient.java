@@ -41,6 +41,11 @@ public class RetrofitClient {
         return retrofit;
     }
 
+    // ✅ Thay vì gọi `getRetrofitInstance()` nhiều lần, dùng biến static để tránh tạo lại Retrofit
+    private static final IceCreamApiService iceCreamApiService = getRetrofitInstance().create(IceCreamApiService.class);
+    private static final CartApiService cartApiService = getRetrofitInstance().create(CartApiService.class);
+    private static final CategoryApiService categoryApiService = getRetrofitInstance().create(CategoryApiService.class);
+
     // Service cho IceCreamApiService
     public static IceCreamApiService getIceCreamApiService() {
         return getRetrofitInstance().create(IceCreamApiService.class);

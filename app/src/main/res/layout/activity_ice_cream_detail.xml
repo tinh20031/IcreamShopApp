@@ -1,0 +1,105 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/ice_cream_background"
+    android:fitsSystemWindows="true">
+
+    <!-- Thanh chứa icon quay lại và logo -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp">
+
+        <!-- Nút quay lại -->
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="16dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_back"
+            android:contentDescription="Back"
+            android:layout_alignParentStart="true"/>
+
+        <!-- Logo Mixta -->
+        <ImageView
+            android:id="@+id/logoMixta"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            android:src="@drawable/img"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+
+
+    <!-- Cuộn nếu màn hình nhỏ -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingBottom="24dp">
+
+            <!-- Hình ảnh kem -->
+            <ImageView
+                android:id="@+id/iceCreamImage"
+                android:layout_width="250dp"
+                android:layout_height="350dp"
+                android:layout_marginBottom="16dp"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"/>
+
+            <!-- PHẦN NỀN TRẮNG TOÀN BỘ -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="253dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <!-- Tên kem -->
+                <TextView
+                    android:id="@+id/iceCreamName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <!-- Mô tả kem -->
+                <TextView
+                    android:id="@+id/iceCreamDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:gravity="center"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="16sp" />
+
+                <!-- Nút mua hàng -->
+                <Button
+                    android:id="@+id/buyButton"
+                    android:layout_width="180dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="16dp"
+                    android:backgroundTint="@color/pink"
+                    android:gravity="center"
+                    android:text="@string/buy_now"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

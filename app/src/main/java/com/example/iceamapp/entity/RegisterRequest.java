@@ -13,8 +13,8 @@ public class RegisterRequest {
     @SerializedName("password")
     private String password;
 
-    @SerializedName("phone")
-    private String phone;
+    @SerializedName("phoneNumber")
+    private String phoneNumber ;
 
     @SerializedName("address")
     private String address;
@@ -22,11 +22,11 @@ public class RegisterRequest {
     @SerializedName("role")
     private String role;
 
-    public RegisterRequest(String fullName, String email, String password, String phone, String address, String role){
+    public RegisterRequest(String fullName, String email, String password, String phoneNumber , String address, String role){
         this.fullName = fullName;
         this.email = email;
         this.password = password;
-        this.phone = phone;
+        this.phoneNumber  = phoneNumber ;
         this.address=address;
         this.role = role;
     }
@@ -63,12 +63,12 @@ public class RegisterRequest {
         this.address = address;
     }
 
-    public String getPhone(){
-        return phone;
+    public String phoneNumber (){
+        return phoneNumber ;
     }
 
-    public void setPhone(String phone){
-        this.phone = phone;
+    public void phoneNumber (String phone){
+        this.phoneNumber  = phoneNumber ;
     }
 
     public String getRole(){

@@ -30,6 +30,8 @@ import me.relex.circleindicator.CircleIndicator3;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import android.widget.TextView;
+import android.content.SharedPreferences;
 
 public class Fragment_homeActivity extends AppCompatActivity {
 
@@ -46,13 +48,15 @@ public class Fragment_homeActivity extends AppCompatActivity {
     private Runnable bannerRunnable;
     private List<IceCream> originalIceCreamList = new ArrayList<>();
     private List<IceCream> filteredIceCreamList = new ArrayList<>();
+    private TextView tvCartBadge;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_home);
-
+        tvCartBadge = findViewById(R.id.cartBadge);
         bannerViewPager = findViewById(R.id.bannerViewPager);
         bannerIndicator = findViewById(R.id.bannerIndicator);
         recyclerView = findViewById(R.id.recyclerView);
@@ -74,7 +78,10 @@ public class Fragment_homeActivity extends AppCompatActivity {
         setupBanner();
         setupSearch();
         setupCartNavigation();
+        updateCartBadge();
+
     }
+
 
     private void setupBanner() {
         bannerImages = Arrays.asList(R.drawable.banner1, R.drawable.banner2, R.drawable.banner3);
@@ -83,7 +90,53 @@ public class Fragment_homeActivity extends AppCompatActivity {
         bannerIndicator.setViewPager(bannerViewPager);
         autoSlideBanner();
     }
+    private void updateCartBadge() {
+        if (tvCartBadge == null) return; // Tránh lỗi NullPointerException
 
+        CartApiService cartApiService = RetrofitClient.getCartApiService();
+
+        cartApiService.getAllCarts().enqueue(new Callback<List<Cart>>() {
+            @Override
+            public void onResponse(Call<List<Cart>> call, Response<List<Cart>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    int itemCount = response.body().size();
+
+                    Log.d("CartBadge", "📦 Số lượng sản phẩm trong giỏ hàng: " + itemCount);
+
+                    if (itemCount > 0) {
+                        tvCartBadge.setVisibility(View.VISIBLE);
+                        tvCartBadge.setText(String.valueOf(itemCount));
+                    } else {
+                        tvCartBadge.setVisibility(View.GONE); // Ẩn nếu giỏ hàng trống
+                    }
+                } else {
+                    Log.e("CartBadge", "❌ API không trả về dữ liệu hợp lệ!");
+                    tvCartBadge.setVisibility(View.GONE); // Ẩn nếu lỗi API
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Cart>> call, Throwable t) {
+                Log.e("CartBadge", "🚨 Lỗi API: " + t.getMessage());
+                tvCartBadge.setVisibility(View.GONE); // Ẩn nếu lỗi kết nối API
+            }
+        });
+    }
+
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateCartBadge(); // Cập nhật giỏ hàng khi quay lại màn hình chính
+    }
+
+
+
+    // Gọi updateCartBadge sau khi thêm sản phẩm vào giỏ hàng
+    public void refreshCartBadge() {
+        updateCartBadge();
+    }
     private void autoSlideBanner() {
         bannerRunnable = new Runnable() {
             @Override

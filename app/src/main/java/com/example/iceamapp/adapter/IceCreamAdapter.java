@@ -30,7 +30,7 @@ import com.example.iceamapp.RetrofitClient;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import com.example.iceamapp.Fragment_homeActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -143,6 +143,10 @@ public class IceCreamAdapter extends RecyclerView.Adapter<IceCreamAdapter.ViewHo
                 if (response.isSuccessful()) {
                     Log.d("AddToCart", "🛒 Đã thêm vào giỏ hàng!");
                     Toast.makeText(context, "Đã thêm vào giỏ hàng!", Toast.LENGTH_SHORT).show();
+                    // 🔄 Cập nhật cart badge
+                    if (context instanceof Fragment_homeActivity) {
+                        ((Fragment_homeActivity) context).refreshCartBadge();
+                    }
                 } else {
                     Log.e("AddToCart", "❌ Thêm giỏ hàng thất bại! Mã lỗi: " + response.code());
                     Toast.makeText(context, "Thêm vào giỏ hàng thất bại!", Toast.LENGTH_SHORT).show();

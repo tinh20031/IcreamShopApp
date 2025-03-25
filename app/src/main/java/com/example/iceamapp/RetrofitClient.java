@@ -7,57 +7,62 @@ import com.example.iceamapp.UnsafeOkHttpClient;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
-    private static final String BASE_URL = "https://10.0.2.2:7283/"; // Đảm bảo URL là chính xác
+    private static final String BASE_URL = "https://10.0.2.2:7283/";
     private static Retrofit retrofit = null;
 
-    // Phương thức khởi tạo Retrofit chung
+    // ✅ Cấu hình OkHttpClient để tắt cache
+    private static OkHttpClient getOkHttpClient() {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                .addInterceptor(chain -> {
+                    Request request = chain.request().newBuilder()
+                            .header("Cache-Control", "no-cache") // ⚡ Tắt cache của Retrofit
+                            .header("Pragma", "no-cache") // ⚡ Không cho phép lưu cache trên server
+                            .build();
+                    return chain.proceed(request);
+                });
+
+        // Nếu là HTTPS tự ký thì dùng UnsafeOkHttpClient
+        if (BASE_URL.startsWith("https")) {
+            return UnsafeOkHttpClient.getUnsafeOkHttpClient();
+        }
+        return builder.build();
+    }
+
+    // ✅ Khởi tạo Retrofit chỉ 1 lần duy nhất
     public static Retrofit getRetrofitInstance() {
         if (retrofit == null) {
-            OkHttpClient client;
-
-            // Kiểm tra API có HTTPS hay không
-            if (BASE_URL.startsWith("https")) {
-                client = UnsafeOkHttpClient.getUnsafeOkHttpClient(); // Dùng UnsafeOkHttpClient cho HTTPS tự ký
-            } else {
-                client = new OkHttpClient.Builder().build();
-            }
-
-            // Khởi tạo Gson với setLenient để xử lý các JSON không chính xác
             Gson gson = new GsonBuilder()
-                    .setLenient() // Cho phép Gson xử lý JSON không chính xác
+                    .setLenient()
                     .create();
 
-            // Khởi tạo Retrofit với Gson đã cấu hình
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create(gson))  // Sử dụng Gson với setLenient
-                    .client(client)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .client(getOkHttpClient()) // Dùng OkHttpClient mới
                     .build();
         }
         return retrofit;
     }
 
-    // ✅ Thay vì gọi `getRetrofitInstance()` nhiều lần, dùng biến static để tránh tạo lại Retrofit
+    // ✅ Các API service
     private static final IceCreamApiService iceCreamApiService = getRetrofitInstance().create(IceCreamApiService.class);
     private static final CartApiService cartApiService = getRetrofitInstance().create(CartApiService.class);
     private static final CategoryApiService categoryApiService = getRetrofitInstance().create(CategoryApiService.class);
 
-    // Service cho IceCreamApiService
     public static IceCreamApiService getIceCreamApiService() {
-        return getRetrofitInstance().create(IceCreamApiService.class);
+        return iceCreamApiService;
     }
 
-    // Service cho CartApiService
     public static CartApiService getCartApiService() {
-        return getRetrofitInstance().create(CartApiService.class);
+        return cartApiService;
     }
 
-    // Service cho CategoryApiService
     public static CategoryApiService getCategoryApiService() {
-        return getRetrofitInstance().create(CategoryApiService.class);
+        return categoryApiService;
     }
 }

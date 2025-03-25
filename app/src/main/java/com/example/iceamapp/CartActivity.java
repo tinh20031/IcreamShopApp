@@ -135,7 +135,7 @@ public class CartActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     Order order = response.body();
                     Log.d("CartActivity", "Order created: OrderId = " + order.getOrderId());
-                    Toast.makeText(CartActivity.this, "Đặt hàng thành công! Order ID: " + order.getOrderId(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CartActivity.this, "Đặt hàng thành công! " , Toast.LENGTH_SHORT).show();
 
                     // Làm mới giao diện giỏ hàng
                     loadCartDataByUserId();

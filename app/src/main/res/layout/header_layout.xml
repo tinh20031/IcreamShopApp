@@ -24,7 +24,23 @@
             android:layout_gravity="center"
             android:src="@drawable/shopping_cart_40px"
             android:contentDescription="Cart" />
+
+        <!-- Badge hiển thị số lượng sản phẩm -->
+        <TextView
+            android:id="@+id/cartBadge"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="top|end"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/bg_circle_red"
+            android:text="0"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:visibility="gone"/>
     </FrameLayout>
+
 
     <FrameLayout
         android:id="@+id/notificationFrame"

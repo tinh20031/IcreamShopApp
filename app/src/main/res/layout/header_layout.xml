@@ -41,9 +41,9 @@
             android:visibility="gone"/>
     </FrameLayout>
 
-
+    <!-- Thay thế Notifications thành Chatbot -->
     <FrameLayout
-        android:id="@+id/notificationFrame"
+        android:id="@+id/chatbotFrame"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:foreground="?attr/selectableItemBackground"
@@ -51,12 +51,12 @@
         android:focusable="true">
 
         <ImageView
-            android:id="@+id/notificationIcon"
+            android:id="@+id/chatbotIcon"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_gravity="center"
-            android:src="@drawable/notifications_40px"
-            android:contentDescription="Notifications" />
+            android:src="@drawable/chatbot_40px"
+            android:contentDescription="Chatbot" />
     </FrameLayout>
 
     <FrameLayout

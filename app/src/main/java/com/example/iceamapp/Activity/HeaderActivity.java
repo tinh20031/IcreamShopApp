@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.example.iceamapp.CartActivity;
+import com.example.iceamapp.Activity.ChatActivity;
 import com.example.iceamapp.R;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -28,6 +29,16 @@ public class HeaderActivity extends AppCompatActivity {
             Log.e("HeaderActivity", "cartIcon not found!");
         }
 
-
+        // Tìm và xử lý sự kiện click vào chatbot
+        ImageView chatbotIcon = findViewById(R.id.chatbotIcon);
+        if (chatbotIcon != null) {
+            chatbotIcon.setOnClickListener(v -> {
+                Log.d("HeaderActivity", "Chatbot icon clicked!");
+                Intent intent = new Intent(HeaderActivity.this, ChatActivity.class);
+                startActivity(intent);
+            });
+        } else {
+            Log.e("HeaderActivity", "chatbotIcon not found!");
+        }
     }
 }

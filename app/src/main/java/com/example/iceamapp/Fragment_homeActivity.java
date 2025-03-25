@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
+
+import com.example.iceamapp.Activity.ChatActivity;
 import com.example.iceamapp.Services.CartApiService;
 import com.example.iceamapp.Services.CategoryApiService;
 import com.example.iceamapp.Services.IceCreamApiService;
@@ -179,6 +181,16 @@ public class Fragment_homeActivity extends AppCompatActivity {
                 });
             } else {
                 Log.e("HomeActivity", "userFrame not found!");
+            }
+            View chatbotFrame = findViewById(R.id.chatbotFrame);
+            if (chatbotFrame != null) {
+                chatbotFrame.setOnClickListener(v -> {
+                    Log.d("HomeActivity", "Chatbot icon clicked!");
+                    Intent intent = new Intent(Fragment_homeActivity.this, ChatActivity.class);
+                    startActivity(intent);
+                });
+            } else {
+                Log.e("HomeActivity", "chatbotFrame not found!");
             }
         }
     }

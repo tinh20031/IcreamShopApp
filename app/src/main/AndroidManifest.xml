@@ -48,6 +48,11 @@
         <activity android:name=".DetailInfoUserActivity"/>
         <activity android:name=".OrderHistoryActivity"/>
         <activity android:name=".IceCreamDetailActivity" android:exported="true"/>
+        <activity android:name=".Activity.ChatActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+
 
     </application>
 

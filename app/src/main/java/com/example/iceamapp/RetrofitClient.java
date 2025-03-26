@@ -1,5 +1,7 @@
 package com.example.iceamapp;
 
+import android.util.Log;
+
 import com.example.iceamapp.Services.CartApiService;
 import com.example.iceamapp.Services.CategoryApiService;
 import com.example.iceamapp.Services.IceCreamApiService;
@@ -8,6 +10,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -23,7 +27,13 @@ public class RetrofitClient {
                             .header("Cache-Control", "no-cache") // ⚡ Tắt cache của Retrofit
                             .header("Pragma", "no-cache") // ⚡ Không cho phép lưu cache trên server
                             .build();
-                    return chain.proceed(request);
+                    Response response = chain.proceed(request);
+                    String rawResponse = response.body() != null ? response.body().string() : "No body";
+                    Log.d("RetrofitClient", "Phản hồi thô từ server: " + rawResponse);
+                    // Tái tạo response body vì body chỉ có thể đọc một lần
+                    ResponseBody newBody = ResponseBody.create(response.body().contentType(), rawResponse);
+                    return response.newBuilder().body(newBody).build();
+//                    return chain.proceed(request);
                 });
 
         // Nếu là HTTPS tự ký thì dùng UnsafeOkHttpClient

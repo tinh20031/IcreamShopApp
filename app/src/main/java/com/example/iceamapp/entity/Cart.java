@@ -1,8 +1,11 @@
 package com.example.iceamapp.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class Cart {
+public class Cart implements Parcelable {
     @SerializedName("cartId")
     private int cartId;
 
@@ -33,6 +36,47 @@ public class Cart {
         this.quantity = quantity;
     }
 
+    protected Cart(Parcel in) {
+        cartId = in.readInt();
+        userId = in.readInt();
+        iceCreamId = in.readInt();
+        quantity = in.readInt();
+        createdAt = in.readString();
+        iceCreamName = in.readString();
+        image = in.readString();
+        price = in.readFloat();
+    }
+
+    public static final Creator<Cart> CREATOR = new Creator<Cart>() {
+        @Override
+        public Cart createFromParcel(Parcel in) {
+            return new Cart(in);
+        }
+
+        @Override
+        public Cart[] newArray(int size) {
+            return new Cart[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(cartId);
+        dest.writeInt(userId);
+        dest.writeInt(iceCreamId);
+        dest.writeInt(quantity);
+        dest.writeString(createdAt);
+        dest.writeString(iceCreamName);
+        dest.writeString(image);
+        dest.writeFloat(price);
+    }
+
+    // Getters
     public int getCartId() { return cartId; }
     public int getUserId() { return userId; }
     public int getIceCreamId() { return iceCreamId; }

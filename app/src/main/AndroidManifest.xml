@@ -86,6 +86,17 @@
             android:name=".IceCreamDetailActivity"
             android:exported="false" />
 
+        <activity android:name=".Activity.ChatActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+
+        <activity android:name=".Admin.AdminActivity"/>
+        <activity android:name=".Admin.ManageProductsActivity"/>
+        <activity android:name=".Admin.ManageOrdersActivity"/>
+        <activity android:name=".Admin.ManageCategoriesActivity"/>
+
+
     </application>
 
 </manifest>

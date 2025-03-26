@@ -50,8 +50,8 @@ public class RegisterActivity extends AppCompatActivity {
         String fullName = fullNameEditText.getText().toString();
         String email = emailEditText.getText().toString();
         String password = passwordEditText.getText().toString();
-        String address = "Quy Nhơn";
-        String phoneNumber = "54235325";
+        String address = "";
+        String phone = "";
         String role = "user";
 
         if (fullName.isEmpty() || email.isEmpty() || password.isEmpty()) {
@@ -59,46 +59,42 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
 
-        // Tạo instance của Retrofit
+        // Retrofit instance
         Retrofit retrofit = RetrofitClient.getRetrofitInstance();
         AuthApiService authApiService = retrofit.create(AuthApiService.class);
 
-        // Chuẩn bị request
-        RegisterRequest registerRequest = new RegisterRequest(fullName, email, password, address, phoneNumber, role);
+        // Gọi API đăng ký
+        RegisterRequest registerRequest = new RegisterRequest(fullName, email, password, address, phone, role);
 
         authApiService.register(registerRequest).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.isSuccessful() && response.body() != null) {
+                if (response.isSuccessful()) {
                     try {
-                        String responseString = response.body().string(); // Đọc body chỉ một lần
+                        String responseString = response.body().string(); // Lấy chuỗi từ ResponseBody
                         Log.d("RegisterResponse", "Response: " + responseString);
 
-                        // Thông báo đăng ký thành công
+                        // Hiển thị thông báo đăng ký thành công
                         Toast.makeText(RegisterActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
 
-                        // Chuyển sang màn hình đăng nhập
+                        // Chuyển hướng sang màn hình đăng nhập (LoginActivity)
                         Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                         startActivity(intent);
-                        finish();
+                        finish(); // Kết thúc Activity đăng ký, không quay lại màn hình đăng ký
 
                     } catch (IOException e) {
-                        Log.e("RegisterError", "Lỗi đọc response: " + e.getMessage());
+                        e.printStackTrace();
+                        Log.e("RegisterError", "Error reading response body: " + e.getMessage());
                     }
                 } else {
-                    try {
-                        String errorBody = response.errorBody() != null ? response.errorBody().string() : "Không có nội dung lỗi";
-                        Log.e("RegisterError", "Đăng ký thất bại: " + response.code() + " - " + errorBody);
-                        Toast.makeText(RegisterActivity.this, "Lỗi: " + errorBody, Toast.LENGTH_SHORT).show();
-                    } catch (IOException e) {
-                        Log.e("RegisterError", "Lỗi khi đọc errorBody: " + e.getMessage());
-                    }
+                    Log.e("RegisterError", "Error: " + response.errorBody());
+                    Toast.makeText(RegisterActivity.this, "Đăng ký thất bại", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.e("RegisterError", "Lỗi kết nối: " + t.getMessage());
+                Log.e("RegisterError", "Failure: " + t.getMessage());
                 Toast.makeText(RegisterActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

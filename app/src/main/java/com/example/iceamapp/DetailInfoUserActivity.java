@@ -8,7 +8,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.widget.ImageView;
-import android.view.View;
 import com.example.iceamapp.Services.AuthApiService;
 import com.example.iceamapp.entity.User;
 import retrofit2.Call;
@@ -18,7 +17,8 @@ import retrofit2.Retrofit;
 
 public class DetailInfoUserActivity extends AppCompatActivity {
 
-    private EditText fullNameEditText, emailEditText, passwordEditText, phoneEditText, addressEditText, roleEditText;
+    private EditText fullNameEditText, emailEditText, passwordEditText;
+    // private EditText phoneEditText, addressEditText, roleEditText;
     private Button saveButton;
     private SharedPreferences sharedPreferences;
     private AuthApiService authApiService;
@@ -32,19 +32,16 @@ public class DetailInfoUserActivity extends AppCompatActivity {
         fullNameEditText = findViewById(R.id.fullNameEditText);
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
-        phoneEditText = findViewById(R.id.phoneEditText);
-        addressEditText = findViewById(R.id.addressEditText);
-        roleEditText = findViewById(R.id.roleEditText);
+        // phoneEditText = findViewById(R.id.phoneEditText);
+        // addressEditText = findViewById(R.id.addressEditText);
+        // roleEditText = findViewById(R.id.roleEditText);
         saveButton = findViewById(R.id.saveButton);
 
-        // Ánh xạ nút Back
         ImageView backButton = findViewById(R.id.backButton);
-
-        // Thêm sự kiện click để quay lại màn hình trước đó
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish(); // Đóng activity hiện tại
+                finish();
             }
         });
 
@@ -52,13 +49,10 @@ public class DetailInfoUserActivity extends AppCompatActivity {
         Retrofit retrofit = RetrofitClient.getRetrofitInstance();
         authApiService = retrofit.create(AuthApiService.class);
 
-        // Lưu thông tin khi nhấn nút Lưu
         saveButton.setOnClickListener(v -> updateUserInfo());
 
-        // Tải thông tin ban đầu
-        loadUserInfoFromServer(); // Tải từ server thay vì chỉ từ SharedPreferences
+        loadUserInfoFromServer();
     }
-
 
     private void loadUserInfoFromServer() {
         int userId = sharedPreferences.getInt("userId", -1);
@@ -72,18 +66,18 @@ public class DetailInfoUserActivity extends AppCompatActivity {
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     User user = response.body();
-                    updateSharedPreferences(user); // Cập nhật SharedPreferences
-                    displayUserInfo(user); // Hiển thị lên giao diện
+                    updateSharedPreferences(user);
+                    displayUserInfo(user);
                 } else {
                     Log.e("LoadUserInfo", "Lỗi khi tải thông tin: " + response.code());
-                    loadUserInfoFromPrefs(); // Fallback về SharedPreferences nếu server lỗi
+                    loadUserInfoFromPrefs();
                 }
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 Log.e("LoadUserInfo", "Lỗi kết nối: " + t.getMessage());
-                loadUserInfoFromPrefs(); // Fallback về SharedPreferences nếu lỗi
+                loadUserInfoFromPrefs();
             }
         });
     }
@@ -92,18 +86,18 @@ public class DetailInfoUserActivity extends AppCompatActivity {
         fullNameEditText.setText(sharedPreferences.getString("fullName", ""));
         emailEditText.setText(sharedPreferences.getString("email", ""));
         passwordEditText.setText(sharedPreferences.getString("passwordHash", ""));
-        phoneEditText.setText(sharedPreferences.getString("phone", ""));
-        addressEditText.setText(sharedPreferences.getString("address", ""));
-        roleEditText.setText(sharedPreferences.getString("role", ""));
+        // phoneEditText.setText(sharedPreferences.getString("phone", ""));
+        // addressEditText.setText(sharedPreferences.getString("address", ""));
+        // roleEditText.setText(sharedPreferences.getString("role", ""));
     }
 
     private void displayUserInfo(User user) {
         fullNameEditText.setText(user.getFullName() != null ? user.getFullName() : "");
         emailEditText.setText(user.getEmail() != null ? user.getEmail() : "");
         passwordEditText.setText(user.getPasswordHash() != null ? user.getPasswordHash() : "");
-        phoneEditText.setText(user.getPhone() != null ? user.getPhone() : "");
-        addressEditText.setText(user.getAddress() != null ? user.getAddress() : "");
-        roleEditText.setText(user.getRole() != null ? user.getRole() : "");
+        // phoneEditText.setText(user.getPhone() != null ? user.getPhone() : "");
+        // addressEditText.setText(user.getAddress() != null ? user.getAddress() : "");
+        // roleEditText.setText(user.getRole() != null ? user.getRole() : "");
     }
 
     private void updateSharedPreferences(User user) {
@@ -111,9 +105,9 @@ public class DetailInfoUserActivity extends AppCompatActivity {
         editor.putString("fullName", user.getFullName());
         editor.putString("email", user.getEmail());
         editor.putString("passwordHash", user.getPasswordHash());
-        editor.putString("phone", user.getPhone());
-        editor.putString("address", user.getAddress());
-        editor.putString("role", user.getRole());
+        // editor.putString("phone", user.getPhone());
+        // editor.putString("address", user.getAddress());
+        // editor.putString("role", user.getRole());
         editor.apply();
     }
 
@@ -121,30 +115,30 @@ public class DetailInfoUserActivity extends AppCompatActivity {
         String fullName = fullNameEditText.getText().toString();
         String email = emailEditText.getText().toString();
         String passwordHash = passwordEditText.getText().toString();
-        String phone = phoneEditText.getText().toString();
-        String address = addressEditText.getText().toString();
+        // String phone = phoneEditText.getText().toString();
+        // String address = addressEditText.getText().toString();
 
-        if (fullName.isEmpty() || email.isEmpty() || phone.isEmpty() || address.isEmpty()) {
+        if (fullName.isEmpty() || email.isEmpty()) {
             Toast.makeText(this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
             return;
         }
 
         String originalPassword = sharedPreferences.getString("passwordHash", "");
-        String originalRole = sharedPreferences.getString("role", "");
+        // String originalRole = sharedPreferences.getString("role", "");
         if (passwordHash.isEmpty()) {
             passwordHash = originalPassword;
         }
 
         int userId = sharedPreferences.getInt("userId", -1);
-        User updatedUser = new User(userId, fullName, email, passwordHash, phone, address, originalRole);
+        User updatedUser = new User(userId, fullName, email, passwordHash, "", "", "");
 
         authApiService.updateUserDetails(userId, updatedUser).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     User user = response.body();
-                    updateSharedPreferences(user); // Cập nhật SharedPreferences
-                    displayUserInfo(user); // Cập nhật giao diện ngay lập tức
+                    updateSharedPreferences(user);
+                    displayUserInfo(user);
                     Toast.makeText(DetailInfoUserActivity.this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(DetailInfoUserActivity.this, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
@@ -161,6 +155,6 @@ public class DetailInfoUserActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loadUserInfoFromServer(); // Tải lại từ server khi quay lại
+        loadUserInfoFromServer();
     }
 }

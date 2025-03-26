@@ -15,9 +15,14 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".infor_user"
+            android:name=".PaymentFailureActivity"
             android:exported="false" />
-        <!-- Splash Screen (Màn hình khởi động) -->
+        <activity
+            android:name=".PaymentSuccessActivity"
+            android:exported="false" />
+        <activity
+            android:name=".infor_user"
+            android:exported="false" /> <!-- Splash Screen (Màn hình khởi động) -->
         <activity
             android:name=".SplashScreen.SplashActivity"
             android:exported="true"
@@ -27,76 +32,64 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <!-- Other Activities -->
+        </activity> <!-- Other Activities -->
         <activity
             android:name=".Activity.HeaderActivity"
             android:exported="false" />
-
         <activity
             android:name=".MainActivity"
             android:exported="false" />
-
         <activity
             android:name=".Fragment_homeActivity"
             android:exported="false" />
-
         <activity
             android:name=".SelectAddressActivity"
             android:exported="false" />
-
-       <!-- <activity
+        <!--
+ <activity
             android:name=".infor_user"
             android:exported="false" />
--->
+        -->
         <activity
             android:name=".VNPayActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
-                    android:scheme="iceamapp"
-                    android:host="payment-callback" />
+                    android:host="payment-callback"
+                    android:scheme="iceamapp" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
-
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />
-
         <activity
             android:name=".CartActivity"
             android:exported="false" />
-
         <activity
             android:name=".DetailInfoUserActivity"
             android:exported="false" />
-
         <activity
             android:name=".OrderHistoryActivity"
             android:exported="false" />
-
         <activity
             android:name=".IceCreamDetailActivity"
             android:exported="false" />
-
-        <activity android:name=".Activity.ChatActivity"
+        <activity
+            android:name=".Activity.ChatActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        </activity>
-
-        <activity android:name=".Admin.AdminActivity"/>
-        <activity android:name=".Admin.ManageProductsActivity"/>
-        <activity android:name=".Admin.ManageOrdersActivity"/>
-        <activity android:name=".Admin.ManageCategoriesActivity"/>
-
-
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".Admin.AdminActivity" />
+        <activity android:name=".Admin.ManageProductsActivity" />
+        <activity android:name=".Admin.ManageOrdersActivity" />
+        <activity android:name=".Admin.ManageCategoriesActivity" />
     </application>
 
 </manifest>

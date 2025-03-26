@@ -29,10 +29,10 @@ public class IceCream {
 
     private Category category;
 
-    // ✅ Constructor mặc định cần thiết nếu sử dụng Retrofit
+    // Constructor mặc định cần thiết nếu sử dụng Retrofit
     public IceCream() {}
 
-    // ✅ Constructor đầy đủ
+    // Constructor đầy đủ
     public IceCream(int iceCreamId, String name, String description, double price, int stock,
                     String imageUrl, String createdAt, int categoryId, Category category) {
         this.iceCreamId = iceCreamId;
@@ -46,7 +46,7 @@ public class IceCream {
         this.category = category;
     }
 
-    // ✅ Đổi getId() thành getIceCreamId() để thống nhất
+    // Getters
     public int getIceCreamId() {
         return iceCreamId;
     }
@@ -79,9 +79,44 @@ public class IceCream {
         return categoryId;
     }
 
-    // ✅ Kiểm tra null trước khi gọi category
     public Category getCategory() {
         return category; // Trả về null nếu category == null
     }
 
+    // Setters (Thêm vào để khắc phục lỗi)
+    public void setIceCreamId(int iceCreamId) {
+        this.iceCreamId = iceCreamId;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 }

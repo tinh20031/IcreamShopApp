@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <!-- Cấp quyền sử dụng Internet -->
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -14,10 +15,14 @@
         android:theme="@style/Theme.IceamApp"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <service
+            android:name=".Services.OrderApiService"
+            android:enabled="true"
+            android:exported="true"></service>
+
         <activity
             android:name=".infor_user"
-            android:exported="false" />
-        <!-- Splash Screen (Màn hình khởi động) -->
+            android:exported="false" /> <!-- Splash Screen (Màn hình khởi động) -->
         <activity
             android:name=".SplashScreen.SplashActivity"
             android:exported="true"
@@ -33,22 +38,28 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".Fragment_homeActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".CartActivity" />
-        <activity android:name=".DetailInfoUserActivity"/>
-        <activity android:name=".OrderHistoryActivity"/>
-        <activity android:name=".IceCreamDetailActivity" android:exported="true"/>
-
+        <activity android:name=".DetailInfoUserActivity" />
+        <activity android:name=".OrderHistoryActivity" />
+        <activity
+            android:name=".IceCreamDetailActivity"
+            android:exported="true" />
+        <activity android:name=".Admin.AdminActivity" />
+        <activity android:name=".Admin.ManageProductsActivity" />
+        <activity android:name=".Admin.ManageCategoriesActivity" />
+        <activity android:name=".Admin.ManageOrdersActivity" />
     </application>
 
 </manifest>

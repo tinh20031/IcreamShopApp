@@ -4,11 +4,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.iceamapp.R;
 import com.example.iceamapp.entity.Category;
 
@@ -45,7 +47,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
         Category category = categoryList.get(position);
         holder.tvCategoryName.setText(category.getName());
-        holder.tvCategoryImage.setText("Hình ảnh: " + category.getImage());
+
+        // Load ảnh từ URL vào ImageView bằng Glide
+        Glide.with(holder.itemView.getContext())
+                .load(category.getImage()) // URL ảnh từ API
+                .placeholder(R.drawable.logo) // Ảnh mặc định trong lúc tải
+                .error(R.drawable.ic_launcher_background) // Ảnh hiển thị nếu tải lỗi
+                .into(holder.imgCategoryImage); // Hiển thị trong ImageView
 
         holder.btnEdit.setOnClickListener(v -> editClickListener.onEditClick(category));
         holder.btnDelete.setOnClickListener(v -> deleteClickListener.onDeleteClick(category));
@@ -57,13 +65,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     }
 
     static class CategoryViewHolder extends RecyclerView.ViewHolder {
-        TextView tvCategoryName, tvCategoryImage;
+        TextView tvCategoryName;
+        ImageView imgCategoryImage;
         Button btnEdit, btnDelete;
 
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
             tvCategoryName = itemView.findViewById(R.id.tvCategoryName);
-            tvCategoryImage = itemView.findViewById(R.id.tvCategoryImage);
+            imgCategoryImage = itemView.findViewById(R.id.imgCategoryImage); // Đổi từ TextView sang ImageView
             btnEdit = itemView.findViewById(R.id.btnEdit);
             btnDelete = itemView.findViewById(R.id.btnDelete);
         }

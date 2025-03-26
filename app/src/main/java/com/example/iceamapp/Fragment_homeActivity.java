@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
+
+import com.example.iceamapp.Activity.ChatActivity;
 import com.example.iceamapp.Services.CartApiService;
 import com.example.iceamapp.Services.CategoryApiService;
 import com.example.iceamapp.Services.IceCreamApiService;
@@ -93,35 +95,44 @@ public class Fragment_homeActivity extends AppCompatActivity {
     private void updateCartBadge() {
         if (tvCartBadge == null) return; // Tránh lỗi NullPointerException
 
-        CartApiService cartApiService = RetrofitClient.getCartApiService();
+        // 🔥 Lấy userId từ SharedPreferences mà không cần truyền context
+        SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        int userId = sharedPreferences.getInt("userId", -1);
 
-        cartApiService.getAllCarts().enqueue(new Callback<List<Cart>>() {
+        if (userId == -1) {
+            Log.e("CartBadge", "🚨 Không tìm thấy userId trong SharedPreferences!");
+            tvCartBadge.setVisibility(View.GONE);
+            return;
+        }
+
+        CartApiService cartApiService = RetrofitClient.getCartApiService();
+        cartApiService.getCartsByUserId(userId).enqueue(new Callback<List<Cart>>() {
             @Override
             public void onResponse(Call<List<Cart>> call, Response<List<Cart>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     int itemCount = response.body().size();
-
-                    Log.d("CartBadge", "📦 Số lượng sản phẩm trong giỏ hàng: " + itemCount);
-
+                    Log.d("CartBadge", "📦 Số lượng sản phẩm trong giỏ hàng của user " + userId + ": " + itemCount);
                     if (itemCount > 0) {
                         tvCartBadge.setVisibility(View.VISIBLE);
                         tvCartBadge.setText(String.valueOf(itemCount));
                     } else {
-                        tvCartBadge.setVisibility(View.GONE); // Ẩn nếu giỏ hàng trống
+                        tvCartBadge.setVisibility(View.GONE);
                     }
                 } else {
                     Log.e("CartBadge", "❌ API không trả về dữ liệu hợp lệ!");
-                    tvCartBadge.setVisibility(View.GONE); // Ẩn nếu lỗi API
+                    tvCartBadge.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFailure(Call<List<Cart>> call, Throwable t) {
                 Log.e("CartBadge", "🚨 Lỗi API: " + t.getMessage());
-                tvCartBadge.setVisibility(View.GONE); // Ẩn nếu lỗi kết nối API
+                tvCartBadge.setVisibility(View.GONE);
             }
         });
     }
+
+
 
 
 
@@ -179,6 +190,16 @@ public class Fragment_homeActivity extends AppCompatActivity {
                 });
             } else {
                 Log.e("HomeActivity", "userFrame not found!");
+            }
+            View chatbotFrame = findViewById(R.id.chatbotFrame);
+            if (chatbotFrame != null) {
+                chatbotFrame.setOnClickListener(v -> {
+                    Log.d("HomeActivity", "Chatbot icon clicked!");
+                    Intent intent = new Intent(Fragment_homeActivity.this, ChatActivity.class);
+                    startActivity(intent);
+                });
+            } else {
+                Log.e("HomeActivity", "chatbotFrame not found!");
             }
         }
     }

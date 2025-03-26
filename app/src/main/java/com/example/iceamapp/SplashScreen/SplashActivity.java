@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.example.iceamapp.Activity.ChatActivity;
 import com.example.iceamapp.CartActivity;
 import com.example.iceamapp.Fragment_homeActivity;
 import com.example.iceamapp.LoginActivity;

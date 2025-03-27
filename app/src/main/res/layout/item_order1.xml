@@ -3,42 +3,63 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:padding="12dp"
+    android:background="@drawable/order_item_background"
+    android:elevation="4dp"
+    android:layout_margin="8dp"
+    android:radius="12dp"
+    android:clipToOutline="true">
 
+    <!-- Mã đơn hàng -->
     <TextView
         android:id="@+id/tvOrderId"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Mã đơn hàng"
+        android:text="🔖 Mã đơn hàng: #12345"
         android:textSize="16sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginBottom="4dp"/>
 
+    <!-- Mã người dùng -->
     <TextView
         android:id="@+id/tvUserId"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Mã người dùng"
-        android:textSize="14sp"/>
+        android:text="👤 Người dùng: #56789"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:layout_marginBottom="4dp"/>
 
+    <!-- Tổng giá -->
     <TextView
         android:id="@+id/tvTotalPrice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Tổng giá"
-        android:textSize="14sp"/>
+        android:text="💰 Tổng giá: 150,000 VND"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginBottom="4dp"/>
 
+    <!-- Trạng thái đơn hàng -->
     <TextView
         android:id="@+id/tvStatus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Trạng thái"
-        android:textSize="14sp"/>
+        android:text="🟡 Trạng thái: Đang xử lý"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginBottom="4dp"/>
 
+    <!-- Ngày đặt hàng -->
     <TextView
         android:id="@+id/tvOrderDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Ngày đặt"
-        android:textSize="14sp"/>
+        android:text="📅 Ngày đặt: 2025-03-27"
+        android:textSize="14sp"
+        android:textColor="@color/black"/>
 
 </LinearLayout>

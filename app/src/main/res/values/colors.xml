@@ -8,6 +8,8 @@
     <color name="splash_background">#F4DAD3</color>
     <color name="dark_gray">#616161</color>
     <color name="ice_cream_background">#EAF5E7</color> <!-- ✅ Thêm màu nền kem -->
-
-
+    <color name="sent_message_background">#0084FF</color> <!-- Màu cho tin nhắn gửi đi -->
+    <color name="messenger_blue">#0084FF</color>
+    <color name="messenger_gray">#E9ECEF</color>
+    <color name="message_background">#E9ECEF</color> <!-- Màu mặc định cho tin nhắn -->
 </resources>

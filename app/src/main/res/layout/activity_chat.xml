@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F5F5F5"
+    android:padding="8dp"
+    android:background="@color/white"
     android:fitsSystemWindows="true">
 
-    <!-- Thanh tiêu đề với nút quay lại -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,7 +17,7 @@
         android:gravity="center_vertical">
 
         <ImageView
-            android:id="@+id/backButton"
+            android:id="@+id/backhotro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_back"
@@ -31,50 +30,51 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Chat với ICEBOT"
+            android:text="Hỗ trợ khách hàng"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@android:color/black"/>
     </LinearLayout>
 
     <!-- Danh sách tin nhắn -->
+
+    <!-- Thanh nhập tin nhắn -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chatRecyclerView"
+        android:id="@+id/recyclerViewChat"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:overScrollMode="never"
-        android:scrollbars="vertical"
-        android:background="@android:color/white"
-        android:padding="8dp"/>
+        android:background="@color/white"
+        android:padding="8dp"
+        android:scrollbars="vertical" />
 
-    <!-- Thanh nhập tin nhắn -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="8dp"
-        android:background="@android:color/white"
+        android:background="@color/white"
         android:elevation="4dp">
 
         <EditText
-            android:id="@+id/inputMessage"
+            android:id="@+id/editTextMessage"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_weight="1"
             android:hint="Nhập tin nhắn..."
-            android:padding="12dp"
-            android:background="@drawable/chat_bubble_user"
-            android:textSize="16sp"/> sendButton
+            android:padding="10dp"
+            android:background="@drawable/edittext_bg"
+            android:textSize="16sp"
+            android:maxLines="3"/>
 
-        <ImageButton
-            android:id="@+id/sendButton"
+        <Button
+            android:id="@+id/btnSend"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginStart="8dp"
-            android:src="@android:drawable/ic_menu_send"
-            android:background="?android:attr/selectableItemBackground"
-            android:contentDescription="Gửi tin nhắn"/>
+            android:text="Gửi"
+            android:backgroundTint="@color/black"
+            android:textColor="@color/white"/>
     </LinearLayout>
 
 </LinearLayout>

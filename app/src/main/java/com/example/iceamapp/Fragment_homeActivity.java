@@ -3,7 +3,6 @@ package com.example.iceamapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -16,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.iceamapp.Activity.ChatActivity;
+import com.example.iceamapp.Activity.ChatActivityRealtime;
 import com.example.iceamapp.Services.CartApiService;
 import com.example.iceamapp.Services.CategoryApiService;
 import com.example.iceamapp.Services.IceCreamApiService;
@@ -52,8 +52,6 @@ public class Fragment_homeActivity extends AppCompatActivity {
     private List<IceCream> filteredIceCreamList = new ArrayList<>();
     private TextView tvCartBadge;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +70,7 @@ public class Fragment_homeActivity extends AppCompatActivity {
         categoryRecyclerView.setHasFixedSize(true);
         categoryRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
-        iceCreamAdapter = new IceCreamAdapter(this, new ArrayList<>()); // Nếu đây là Activity
+        iceCreamAdapter = new IceCreamAdapter(this, new ArrayList<>());
         recyclerView.setAdapter(iceCreamAdapter);
 
         loadIceCreams();
@@ -81,9 +79,7 @@ public class Fragment_homeActivity extends AppCompatActivity {
         setupSearch();
         setupCartNavigation();
         updateCartBadge();
-
     }
-
 
     private void setupBanner() {
         bannerImages = Arrays.asList(R.drawable.banner1, R.drawable.banner2, R.drawable.banner3);
@@ -92,15 +88,14 @@ public class Fragment_homeActivity extends AppCompatActivity {
         bannerIndicator.setViewPager(bannerViewPager);
         autoSlideBanner();
     }
-    private void updateCartBadge() {
-        if (tvCartBadge == null) return; // Tránh lỗi NullPointerException
 
-        // 🔥 Lấy userId từ SharedPreferences mà không cần truyền context
+    private void updateCartBadge() {
+        if (tvCartBadge == null) return;
+
         SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
         int userId = sharedPreferences.getInt("userId", -1);
 
         if (userId == -1) {
-            Log.e("CartBadge", "🚨 Không tìm thấy userId trong SharedPreferences!");
             tvCartBadge.setVisibility(View.GONE);
             return;
         }
@@ -111,7 +106,6 @@ public class Fragment_homeActivity extends AppCompatActivity {
             public void onResponse(Call<List<Cart>> call, Response<List<Cart>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     int itemCount = response.body().size();
-                    Log.d("CartBadge", "📦 Số lượng sản phẩm trong giỏ hàng của user " + userId + ": " + itemCount);
                     if (itemCount > 0) {
                         tvCartBadge.setVisibility(View.VISIBLE);
                         tvCartBadge.setText(String.valueOf(itemCount));
@@ -119,35 +113,27 @@ public class Fragment_homeActivity extends AppCompatActivity {
                         tvCartBadge.setVisibility(View.GONE);
                     }
                 } else {
-                    Log.e("CartBadge", "❌ API không trả về dữ liệu hợp lệ!");
                     tvCartBadge.setVisibility(View.GONE);
                 }
             }
 
             @Override
             public void onFailure(Call<List<Cart>> call, Throwable t) {
-                Log.e("CartBadge", "🚨 Lỗi API: " + t.getMessage());
                 tvCartBadge.setVisibility(View.GONE);
             }
         });
     }
 
-
-
-
-
     @Override
     protected void onResume() {
         super.onResume();
-        updateCartBadge(); // Cập nhật giỏ hàng khi quay lại màn hình chính
+        updateCartBadge();
     }
 
-
-
-    // Gọi updateCartBadge sau khi thêm sản phẩm vào giỏ hàng
     public void refreshCartBadge() {
         updateCartBadge();
     }
+
     private void autoSlideBanner() {
         bannerRunnable = new Runnable() {
             @Override
@@ -180,26 +166,30 @@ public class Fragment_homeActivity extends AppCompatActivity {
                 Intent intent = new Intent(Fragment_homeActivity.this, CartActivity.class);
                 startActivity(intent);
             });
-
+            View Chatsup = findViewById(R.id.Chatsup);
+            if (Chatsup != null) {
+                Chatsup.setOnClickListener(v -> {
+                    Log.d("HomeActivity", "chat real time clicked!");
+                    Intent intent = new Intent(Fragment_homeActivity.this, ChatActivityRealtime.class);
+                    startActivity(intent);
+                });
+            } else {
+                Log.e("HomeActivity", "chatrealtime not found!");
+            }
             View userFrame = findViewById(R.id.userFrame);
             if (userFrame != null) {
                 userFrame.setOnClickListener(v -> {
-                    Log.d("HomeActivity", "User avatar clicked!");
                     Intent intent = new Intent(Fragment_homeActivity.this, infor_user.class);
                     startActivity(intent);
                 });
-            } else {
-                Log.e("HomeActivity", "userFrame not found!");
             }
+
             View chatbotFrame = findViewById(R.id.chatbotFrame);
             if (chatbotFrame != null) {
                 chatbotFrame.setOnClickListener(v -> {
-                    Log.d("HomeActivity", "Chatbot icon clicked!");
                     Intent intent = new Intent(Fragment_homeActivity.this, ChatActivity.class);
                     startActivity(intent);
                 });
-            } else {
-                Log.e("HomeActivity", "chatbotFrame not found!");
             }
         }
     }
@@ -213,7 +203,6 @@ public class Fragment_homeActivity extends AppCompatActivity {
                     originalIceCreamList.clear();
                     originalIceCreamList.addAll(response.body());
 
-                    // Hiển thị tất cả sản phẩm ban đầu
                     filteredIceCreamList.clear();
                     filteredIceCreamList.addAll(originalIceCreamList);
                     iceCreamAdapter.updateData(filteredIceCreamList);
@@ -222,7 +211,7 @@ public class Fragment_homeActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<IceCream>> call, Throwable t) {
-                Log.e("API", "Failed to load ice creams: " + t.getMessage());
+                // Không hiển thị log
             }
         });
     }
@@ -235,15 +224,12 @@ public class Fragment_homeActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     List<IceCream> iceCreams = response.body();
                     iceCreamAdapter.updateData(iceCreams);
-                    Log.d("API", "🔹 Lấy thành công danh sách kem của danh mục ID: " + categoryId);
-                } else {
-                    Log.e("API", "⚠️ Không có sản phẩm cho danh mục ID: " + categoryId);
                 }
             }
 
             @Override
             public void onFailure(Call<List<IceCream>> call, Throwable t) {
-                Log.e("API", "🚨 Lỗi khi tải danh sách kem: " + t.getMessage());
+                // Không hiển thị log
             }
         });
     }
@@ -259,33 +245,26 @@ public class Fragment_homeActivity extends AppCompatActivity {
                     categoryAdapter = new CategoryAdapter(Fragment_homeActivity.this, categories);
                     categoryRecyclerView.setAdapter(categoryAdapter);
 
-                    // 🟢 Thêm sự kiện khi nhấn vào danh mục
                     categoryAdapter.setOnItemClickListener(new CategoryAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(Category category) {
-                            Log.d("Category Click", "Chọn danh mục ID: " + category.getCategoryId());
-                            loadIceCreamsByCategory(category.getCategoryId()); // 🟢 Gọi API để lấy danh sách kem theo danh mục
+                            loadIceCreamsByCategory(category.getCategoryId());
                         }
                     });
-                } else {
-                    Log.e("API", "Không tải được danh mục");
                 }
             }
 
             @Override
             public void onFailure(Call<List<Category>> call, Throwable t) {
-                Log.e("API", "Lỗi khi tải danh mục: " + t.getMessage());
+                // Không hiển thị log
             }
         });
     }
-
-
 
     private void searchIceCreams(String name) {
         IceCreamApiService apiService = RetrofitClient.getIceCreamApiService();
 
         if (name == null || name.trim().isEmpty()) {
-            Log.d("SearchAPI", "🔄 Từ khóa trống, tải lại danh sách mặc định.");
             loadDefaultIceCreams();
             return;
         }
@@ -294,29 +273,25 @@ public class Fragment_homeActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<IceCream>> call, Response<List<IceCream>> response) {
                 if (!response.isSuccessful()) {
-                    Log.e("SearchAPI", "❌ Lỗi API - Mã: " + response.code());
                     return;
                 }
 
                 List<IceCream> result = response.body();
                 if (result == null || result.isEmpty()) {
-                    Log.w("SearchAPI", "⚠️ Không tìm thấy kết quả cho: " + name);
-                    iceCreamAdapter.updateData(new ArrayList<>()); // Xóa danh sách nếu không tìm thấy
+                    iceCreamAdapter.updateData(new ArrayList<>());
                     return;
                 }
 
-                Log.d("SearchAPI", "✅ Tìm thấy " + result.size() + " kết quả.");
                 iceCreamAdapter.updateData(result);
             }
 
             @Override
             public void onFailure(Call<List<IceCream>> call, Throwable t) {
-                Log.e("SearchAPI", "🚨 Lỗi kết nối API: " + t.getMessage(), t);
+                // Không hiển thị log
             }
         });
     }
 
-    // 🟢 Hàm lấy danh sách kem mặc định
     private void loadDefaultIceCreams() {
         IceCreamApiService apiService = RetrofitClient.getIceCreamApiService();
         apiService.getAllIceCreams().enqueue(new Callback<List<IceCream>>() {
@@ -324,23 +299,18 @@ public class Fragment_homeActivity extends AppCompatActivity {
             public void onResponse(Call<List<IceCream>> call, Response<List<IceCream>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     iceCreamAdapter.updateData(response.body());
-                    Log.d("LoadDefault", "✅ Danh sách mặc định được tải.");
-                } else {
-                    Log.e("LoadDefault", "❌ Không thể tải danh sách mặc định.");
                 }
             }
 
             @Override
             public void onFailure(Call<List<IceCream>> call, Throwable t) {
-                Log.e("LoadDefault", "🚨 Lỗi kết nối API: " + t.getMessage(), t);
+                // Không hiển thị log
             }
         });
     }
 
     private void filterIceCreamsByCategory(String categoryName) {
         filteredIceCreamList.clear();
-
-        Log.d("Filter", "Filtering by category: " + categoryName);
 
         if (categoryName.equals("All")) {
             filteredIceCreamList.addAll(originalIceCreamList);
@@ -352,8 +322,6 @@ public class Fragment_homeActivity extends AppCompatActivity {
                     String iceCreamCategory = iceCream.getCategory().getName().trim().toLowerCase();
                     String selectedCategory = categoryName.trim().toLowerCase();
 
-                    Log.d("Filter", "Checking: " + iceCream.getName() + " - " + iceCreamCategory + " vs " + selectedCategory);
-
                     if (iceCreamCategory.equals(selectedCategory)) {
                         filteredIceCreamList.add(iceCream);
                     }
@@ -361,9 +329,6 @@ public class Fragment_homeActivity extends AppCompatActivity {
             }
         }
 
-        Log.d("Filter", "Filtered List Size: " + filteredIceCreamList.size());
         iceCreamAdapter.updateData(filteredIceCreamList);
     }
-
-
 }

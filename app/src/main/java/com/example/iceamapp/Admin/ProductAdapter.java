@@ -4,17 +4,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.iceamapp.R;
 import com.example.iceamapp.entity.IceCream;
 
 import java.util.List;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
+public class    ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
     private List<IceCream> productList;
     private final OnEditClickListener editClickListener;
@@ -48,6 +50,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.tvProductPrice.setText(String.format("Giá: %.2f", iceCream.getPrice()));
         holder.tvProductStock.setText("Kho: " + iceCream.getStock());
 
+        // Tải ảnh từ URL bằng Glide
+        Glide.with(holder.itemView.getContext())
+                .load(iceCream.getImageUrl())
+                .placeholder(R.drawable.logo) // Ảnh mặc định khi đang tải
+                .error(R.drawable.logo)       // Ảnh hiển thị nếu lỗi
+                .into(holder.imgProductImage);
+
         holder.btnEdit.setOnClickListener(v -> editClickListener.onEditClick(iceCream));
         holder.btnDelete.setOnClickListener(v -> deleteClickListener.onDeleteClick(iceCream));
     }
@@ -60,6 +69,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     static class ProductViewHolder extends RecyclerView.ViewHolder {
         TextView tvProductName, tvProductPrice, tvProductStock;
         Button btnEdit, btnDelete;
+        ImageView imgProductImage; // Thêm ImageView
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -68,6 +78,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             tvProductStock = itemView.findViewById(R.id.tvProductStock);
             btnEdit = itemView.findViewById(R.id.btnEdit);
             btnDelete = itemView.findViewById(R.id.btnDelete);
+            imgProductImage = itemView.findViewById(R.id.imgProductImage); // Khởi tạo ImageView
         }
     }
 }

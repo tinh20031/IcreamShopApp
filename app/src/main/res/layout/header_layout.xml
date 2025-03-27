@@ -22,7 +22,7 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_gravity="center"
-            android:src="@drawable/shopping_cart_40px"
+            android:src="@drawable/hinhshop"
             android:contentDescription="Cart" />
 
         <!-- Badge hiển thị số lượng sản phẩm -->
@@ -40,6 +40,23 @@
             android:gravity="center"
             android:visibility="gone"/>
     </FrameLayout>
+    <FrameLayout
+        android:id="@+id/Chatsup"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:foreground="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
+
+        <ImageView
+            android:id="@+id/Chatsupicon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:src="@drawable/tinnhan"
+            android:contentDescription="chat realtime" />
+    </FrameLayout>
 
     <!-- Thay thế Notifications thành Chatbot -->
     <FrameLayout
@@ -52,10 +69,10 @@
 
         <ImageView
             android:id="@+id/chatbotIcon"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_gravity="center"
-            android:src="@drawable/chatbot_40px"
+            android:src="@drawable/bot"
             android:contentDescription="Chatbot" />
     </FrameLayout>
 
@@ -73,8 +90,9 @@
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:scaleType="centerCrop"
-            android:src="@drawable/account_circle_40px"
+            android:src="@drawable/user"
             android:background="@drawable/bg_circle"
             android:contentDescription="User Avatar" />
     </FrameLayout>
+
 </LinearLayout>

@@ -1,5 +1,6 @@
 package com.example.iceamapp.Admin;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -12,6 +13,7 @@ import com.example.iceamapp.R;
 import com.example.iceamapp.RetrofitClient;
 import com.example.iceamapp.Services.OrderApiService;
 import com.example.iceamapp.entity.Order;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.List;
 
@@ -23,6 +25,7 @@ public class ManageOrdersActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private OrderAdapter orderAdapter;
+    private MaterialButton btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +33,12 @@ public class ManageOrdersActivity extends AppCompatActivity {
         setContentView(R.layout.activity_manage_orders);
 
         recyclerView = findViewById(R.id.recyclerViewOrders);
+        btnBack = findViewById(R.id.btnBack);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         loadOrders();
+
+        btnBack.setOnClickListener(v -> finish());
     }
 
     private void loadOrders() {
@@ -44,7 +50,12 @@ public class ManageOrdersActivity extends AppCompatActivity {
             public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<Order> orderList = response.body();
-                    orderAdapter = new OrderAdapter(orderList);
+                    orderAdapter = new OrderAdapter(orderList, order -> {
+                        // Khi nhấn vào đơn hàng, mở OrderDetailActivity
+                        Intent intent = new Intent(ManageOrdersActivity.this, OrderDetailActivity.class);
+                        intent.putExtra("ORDER_ID", order.getOrderId());
+                        startActivity(intent);
+                    });
                     recyclerView.setAdapter(orderAdapter);
                 } else {
                     Toast.makeText(ManageOrdersActivity.this, "Không thể tải danh sách đơn hàng", Toast.LENGTH_SHORT).show();

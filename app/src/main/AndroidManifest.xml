@@ -14,12 +14,12 @@
         android:theme="@style/Theme.IceamApp"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity
+        <!--<activity
             android:name=".PaymentFailureActivity"
             android:exported="false" />
         <activity
             android:name=".PaymentSuccessActivity"
-            android:exported="false" />
+            android:exported="false" />-->
         <activity
             android:name=".infor_user"
             android:exported="false" /> <!-- Splash Screen (Màn hình khởi động) -->
@@ -90,6 +90,7 @@
         <activity android:name=".Admin.ManageProductsActivity" />
         <activity android:name=".Admin.ManageOrdersActivity" />
         <activity android:name=".Admin.ManageCategoriesActivity" />
+        <activity android:name=".Activity.ChatActivityRealtime"/>
     </application>
 
 </manifest>

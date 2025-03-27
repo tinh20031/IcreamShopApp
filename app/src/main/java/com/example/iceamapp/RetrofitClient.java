@@ -14,6 +14,7 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import com.example.iceamapp.Services.ChatApiService;
 
 public class RetrofitClient {
     private static final String BASE_URL = "https://10.0.2.2:7283/";
@@ -75,4 +76,9 @@ public class RetrofitClient {
     public static CategoryApiService getCategoryApiService() {
         return categoryApiService;
     }
+    private static final ChatApiService chatApiService = getRetrofitInstance().create(ChatApiService.class);
+    public static ChatApiService getChatApiService() {
+        return chatApiService;
+    }
+
 }

@@ -1,45 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="8dp">
-
-    <TextView
-        android:id="@+id/tvCategoryName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Tên danh mục"
-        android:textSize="16sp"
-        android:textStyle="bold"/>
-
-    <TextView
-        android:id="@+id/tvCategoryImage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Hình ảnh"
-        android:textSize="14sp"/>
+    app:cardCornerRadius="16dp"
+    app:cardElevation="6dp"
+    android:layout_margin="8dp"
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="end">
+        android:padding="12dp"
+        android:gravity="center_vertical">
 
-        <Button
-            android:id="@+id/btnEdit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sửa"
-            android:textSize="12sp"/>
+        <!-- Hình ảnh danh mục bên trái -->
+        <ImageView
+            android:id="@+id/imgCategoryImage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            android:background="@drawable/image_border"
+            android:layout_marginEnd="12dp"
+            android:src="@drawable/logo"/>
 
-        <Button
-            android:id="@+id/btnDelete"
-            android:layout_width="wrap_content"
+        <!-- Layout chứa thông tin và nút bấm -->
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Xóa"
-            android:textSize="12sp"
-            android:layout_marginStart="8dp"/>
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
+
+            <!-- Tên danh mục -->
+            <TextView
+                android:id="@+id/tvCategoryName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:paddingBottom="8dp" />
+
+            <!-- Nút Sửa & Xóa căn phải -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="end">
+
+                <Button
+                    android:id="@+id/btnEdit"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:text="Sửa"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
+                    android:background="@drawable/button_rounded"
+                    android:layout_marginEnd="8dp"/>
+
+                <Button
+                    android:id="@+id/btnDelete"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:text="Xóa"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
+                    android:background="@drawable/button_rounded"/>
+            </LinearLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
-</LinearLayout>
+</androidx.cardview.widget.CardView>

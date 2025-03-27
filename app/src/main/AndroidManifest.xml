@@ -90,6 +90,9 @@
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
+        <activity android:name=".Activity.ChatActivityRealtime"
+            android:exported="true"
+            android:label="Chat"/>
 
         <activity android:name=".Admin.AdminActivity"/>
         <activity android:name=".Admin.ManageProductsActivity"/>

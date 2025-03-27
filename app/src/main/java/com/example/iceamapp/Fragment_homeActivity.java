@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.iceamapp.Activity.ChatActivity;
+import com.example.iceamapp.Activity.ChatActivityRealtime;
 import com.example.iceamapp.Services.CartApiService;
 import com.example.iceamapp.Services.CategoryApiService;
 import com.example.iceamapp.Services.IceCreamApiService;
@@ -180,7 +181,16 @@ public class Fragment_homeActivity extends AppCompatActivity {
                 Intent intent = new Intent(Fragment_homeActivity.this, CartActivity.class);
                 startActivity(intent);
             });
-
+            View Chatsup = findViewById(R.id.Chatsup);
+            if (Chatsup != null) {
+                Chatsup.setOnClickListener(v -> {
+                    Log.d("HomeActivity", "chat real time clicked!");
+                    Intent intent = new Intent(Fragment_homeActivity.this, ChatActivityRealtime.class);
+                    startActivity(intent);
+                });
+            } else {
+                Log.e("HomeActivity", "chatrealtime not found!");
+            }
             View userFrame = findViewById(R.id.userFrame);
             if (userFrame != null) {
                 userFrame.setOnClickListener(v -> {

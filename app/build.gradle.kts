@@ -60,6 +60,7 @@ dependencies {
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation ("com.google.code.gson:gson:2.8.9")
     implementation ("androidx.cardview:cardview:1.0.0")
+    implementation ("com.microsoft.signalr:signalr:7.0.5")
 
 
 }

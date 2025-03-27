@@ -3,7 +3,6 @@ package com.example.iceamapp;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -81,8 +80,6 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     User user = response.body();
                     if (user != null) {
-                        Log.d("UserData", "Dữ liệu thô từ API: " + new Gson().toJson(user));
-
                         // Lưu userId vào SharedPreferences
                         SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -97,7 +94,6 @@ public class LoginActivity extends AppCompatActivity {
                                 if (response.isSuccessful()) {
                                     User detailedUser = response.body();
                                     if (detailedUser != null) {
-                                        Log.d("UserData", "Thông tin chi tiết: " + new Gson().toJson(detailedUser));
                                         // Lưu thông tin chi tiết vào SharedPreferences
                                         editor.putString("fullName", detailedUser.getFullName() != null ? detailedUser.getFullName() : "Không xác định");
                                         editor.putString("email", detailedUser.getEmail() != null ? detailedUser.getEmail() : "Không xác định");
@@ -118,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
                                         finish();
                                     }
                                 } else {
-                                    Log.e("UserData", "Lỗi khi lấy chi tiết: " + response.code());
+                                    Toast.makeText(LoginActivity.this, "Không thể lấy thông tin chi tiết người dùng", Toast.LENGTH_SHORT).show();
                                     // Chuyển hướng mặc định đến Fragment_homeActivity nếu lỗi
                                     Intent intent = new Intent(LoginActivity.this, Fragment_homeActivity.class);
                                     startActivity(intent);
@@ -128,7 +124,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             @Override
                             public void onFailure(Call<User> call, Throwable t) {
-                                Log.e("UserData", "Lỗi kết nối: " + t.getMessage());
+                                Toast.makeText(LoginActivity.this, "Lỗi kết nối khi lấy thông tin chi tiết: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                                 // Chuyển hướng mặc định đến Fragment_homeActivity nếu lỗi
                                 Intent intent = new Intent(LoginActivity.this, Fragment_homeActivity.class);
                                 startActivity(intent);
@@ -139,13 +135,15 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(LoginActivity.this, "Lỗi: Không có dữ liệu người dùng", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Log.e("LoginError", "Mã lỗi: " + response.code() + " Thông báo: " + response.message());
+                    String errorMessage = "Thông tin đăng nhập không chính xác";
                     try {
-                        Log.e("LoginError", "Nội dung lỗi: " + response.errorBody().string());
+                        if (response.errorBody() != null) {
+                            errorMessage = response.errorBody().string();
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    Toast.makeText(LoginActivity.this, "Thông tin đăng nhập không chính xác", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                 }
             }
 

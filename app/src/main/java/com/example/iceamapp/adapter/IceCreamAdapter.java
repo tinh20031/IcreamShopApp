@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +40,7 @@ public class IceCreamAdapter extends RecyclerView.Adapter<IceCreamAdapter.ViewHo
 
     public IceCreamAdapter(Context context, List<IceCream> iceCreams) {
         this.context = context;
-        this.iceCreams = new ArrayList<>(iceCreams); // Khởi tạo danh sách tránh lỗi NullPointerException
+        this.iceCreams = new ArrayList<>(iceCreams);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -76,7 +75,6 @@ public class IceCreamAdapter extends RecyclerView.Adapter<IceCreamAdapter.ViewHo
         holder.tvStock.setText("Stock: " + iceCream.getStock());
 
         String imageUrl = iceCream.getImageUrl();
-        Log.d("Glide", "📌 Đang tải ảnh từ URL: " + imageUrl);
 
         Glide.with(holder.itemView.getContext())
                 .load(imageUrl)
@@ -86,13 +84,11 @@ public class IceCreamAdapter extends RecyclerView.Adapter<IceCreamAdapter.ViewHo
                 .listener(new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        Log.e("GlideError", "❌ Load ảnh thất bại: " + imageUrl, e);
                         return false;
                     }
 
                     @Override
                     public boolean onResourceReady(@NonNull Drawable resource, Object model, @NonNull Target<Drawable> target, @NonNull DataSource dataSource, boolean isFirstResource) {
-                        Log.d("GlideSuccess", "✅ Load ảnh thành công: " + imageUrl);
                         holder.imgIceCream.setImageDrawable(resource);
                         return false;
                     }
@@ -102,7 +98,7 @@ public class IceCreamAdapter extends RecyclerView.Adapter<IceCreamAdapter.ViewHo
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), IceCreamDetailActivity.class);
-            intent.putExtra("ICE_CREAM_ID", iceCream.getIceCreamId()); // ✅ Dùng đúng phương thức
+            intent.putExtra("ICE_CREAM_ID", iceCream.getIceCreamId());
             v.getContext().startActivity(intent);
         });
     }
@@ -112,10 +108,9 @@ public class IceCreamAdapter extends RecyclerView.Adapter<IceCreamAdapter.ViewHo
         return iceCreams.size();
     }
 
-    // 🛒 Hàm gọi API để thêm vào giỏ hàng
+
     private void addToCart(IceCream iceCream) {
         if (context == null) {
-            Log.e("AddToCart", "❌ Lỗi: Context null!");
             return;
         }
 
@@ -125,12 +120,9 @@ public class IceCreamAdapter extends RecyclerView.Adapter<IceCreamAdapter.ViewHo
 
         // Kiểm tra userId
         if (userId == -1) {
-            Log.e("AddToCart", "⚠️ User chưa đăng nhập. Không thể thêm vào giỏ hàng.");
             Toast.makeText(context, "Bạn chưa đăng nhập!", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        Log.d("AddToCart", "✅ Lấy userId thành công: " + userId);
 
         // Gửi API thêm vào giỏ hàng
         Cart cart = new Cart(userId, iceCream.getIceCreamId(), 1);
@@ -141,31 +133,27 @@ public class IceCreamAdapter extends RecyclerView.Adapter<IceCreamAdapter.ViewHo
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    Log.d("AddToCart", "🛒 Đã thêm vào giỏ hàng!");
                     Toast.makeText(context, "Đã thêm vào giỏ hàng!", Toast.LENGTH_SHORT).show();
                     // 🔄 Cập nhật cart badge
                     if (context instanceof Fragment_homeActivity) {
                         ((Fragment_homeActivity) context).refreshCartBadge();
                     }
                 } else {
-                    Log.e("AddToCart", "❌ Thêm giỏ hàng thất bại! Mã lỗi: " + response.code());
                     Toast.makeText(context, "Thêm vào giỏ hàng thất bại!", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Log.e("AddToCart", "🚨 Lỗi kết nối API: " + t.getMessage(), t);
                 Toast.makeText(context, "Lỗi kết nối!", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
 
-    // 🔄 Cập nhật danh sách sản phẩm và làm mới giao diện
     public void updateData(List<IceCream> newIceCreams) {
         this.iceCreams.clear();
         this.iceCreams.addAll(newIceCreams);
-        notifyDataSetChanged(); // Thông báo RecyclerView làm mới dữ liệu
+        notifyDataSetChanged();
     }
 }

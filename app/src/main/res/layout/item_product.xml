@@ -1,76 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="6dp"
     android:layout_margin="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="4dp"
-    app:cardBackgroundColor="@android:color/white">
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:gravity="center_vertical">
 
-        <!-- Tên sản phẩm -->
-        <TextView
-            android:id="@+id/tvProductName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Tên kem "
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"/>
+        <!-- Hình ảnh sản phẩm bên trái -->
+        <ImageView
+            android:id="@+id/imgProductImage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            android:background="@drawable/image_border"
+            android:layout_marginEnd="12dp"
+            android:src="@drawable/logo"/>
 
-        <!-- Giá tiền -->
-        <TextView
-            android:id="@+id/tvProductPrice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Giá: 50.000 VNĐ"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/darker_gray"/>
-
-        <!-- Số lượng kho -->
-        <TextView
-            android:id="@+id/tvProductStock"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Kho: 20"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/darker_gray"/>
-
-        <!-- Nút thao tác -->
+        <!-- Layout chứa thông tin và nút bấm -->
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="end"
-            android:layout_marginTop="8dp">
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnEdit"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="wrap_content"
+            <!-- Tên sản phẩm -->
+            <TextView
+                android:id="@+id/tvProductName"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Sửa"
-                android:backgroundTint="@color/material_on_surface_emphasis_medium"
-                android:textSize="12sp"/>
+                android:text="Tên kem"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:paddingBottom="8dp" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnDelete"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="wrap_content"
+            <!-- Giá tiền -->
+            <TextView
+                android:id="@+id/tvProductPrice"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Xóa"
-                android:backgroundTint="@color/material_on_surface_emphasis_medium"
-                android:textSize="12sp"
-                android:layout_marginStart="8dp"
-                android:textColor="@android:color/holo_red_dark"/>
+                android:text="Giá: 50.000 VNĐ"
+                android:textSize="14sp"
+                android:textColor="@android:color/darker_gray"
+                android:paddingBottom="4dp"/>
+
+            <!-- Số lượng kho -->
+            <TextView
+                android:id="@+id/tvProductStock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Kho: 20"
+                android:textSize="14sp"
+                android:textColor="@android:color/darker_gray"
+                android:paddingBottom="8dp"/>
+
+            <!-- Nút Sửa & Xóa căn phải -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="end">
+
+                <Button
+                    android:id="@+id/btnEdit"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:text="Sửa"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
+                    android:background="@drawable/button_rounded"
+                    android:layout_marginEnd="8dp"/>
+
+                <Button
+                    android:id="@+id/btnDelete"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:text="Xóa"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
+                    android:background="@drawable/button_rounded"/>
+            </LinearLayout>
+
         </LinearLayout>
+
     </LinearLayout>
 </androidx.cardview.widget.CardView>

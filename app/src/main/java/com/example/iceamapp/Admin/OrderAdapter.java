@@ -16,9 +16,15 @@ import java.util.List;
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
 
     private List<Order> orderList;
+    private OnItemClickListener itemClickListener;
 
-    public OrderAdapter(List<Order> orderList) {
+    public interface OnItemClickListener {
+        void onItemClick(Order order);
+    }
+
+    public OrderAdapter(List<Order> orderList, OnItemClickListener itemClickListener) {
         this.orderList = orderList;
+        this.itemClickListener = itemClickListener;
     }
 
     @NonNull
@@ -36,6 +42,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         holder.tvTotalPrice.setText(String.format("Tổng giá: %.2f", order.getTotalPrice()));
         holder.tvStatus.setText("Trạng thái: " + order.getStatus());
         holder.tvOrderDate.setText("Ngày đặt: " + order.getOrderDate());
+
+        // Xử lý sự kiện nhấn vào item
+        holder.itemView.setOnClickListener(v -> itemClickListener.onItemClick(order));
     }
 
     @Override

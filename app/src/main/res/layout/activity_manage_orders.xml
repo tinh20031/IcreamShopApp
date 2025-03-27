@@ -6,7 +6,20 @@
     android:orientation="vertical"
     android:padding="16dp"
     android:gravity="center_horizontal"
+    android:fitsSystemWindows="true"
     android:background="@color/splash_background">
+
+    <!-- Nút Quay lại -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnBack"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="← Quay lại"
+        android:textSize="14sp"
+        android:layout_gravity="start"
+        android:layout_marginBottom="16dp"
+        android:textColor="@android:color/black"/>
 
     <!-- Logo -->
     <ImageView

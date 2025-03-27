@@ -12,6 +12,7 @@ import com.example.iceamapp.R;
 import com.example.iceamapp.RetrofitClient;
 import com.example.iceamapp.Services.OrderApiService;
 import com.example.iceamapp.entity.Order;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class ManageOrdersActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private OrderAdapter orderAdapter;
+    private MaterialButton btnBack; // Thêm biến cho nút Back
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +32,13 @@ public class ManageOrdersActivity extends AppCompatActivity {
         setContentView(R.layout.activity_manage_orders);
 
         recyclerView = findViewById(R.id.recyclerViewOrders);
+        btnBack = findViewById(R.id.btnBack); // Liên kết với nút Back trong layout
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         loadOrders();
+
+        // Xử lý sự kiện khi nhấn nút Back
+        btnBack.setOnClickListener(v -> finish()); // Gọi finish() để quay lại màn hình trước đó
     }
 
     private void loadOrders() {

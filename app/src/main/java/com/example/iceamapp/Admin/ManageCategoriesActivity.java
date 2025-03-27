@@ -23,6 +23,7 @@ import com.example.iceamapp.R;
 import com.example.iceamapp.RetrofitClient;
 import com.example.iceamapp.Services.CategoryApiService;
 import com.example.iceamapp.entity.Category;
+import com.google.android.material.button.MaterialButton;
 
 import java.io.InputStream;
 import java.util.List;
@@ -38,7 +39,8 @@ public class ManageCategoriesActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private CategoryAdapter categoryAdapter;
-    private Button btnAddCategory;
+    private MaterialButton btnAddCategory;
+    private MaterialButton btnBack; // Thêm biến cho nút Back
     private Uri selectedImageUri;
     private ActivityResultLauncher<Intent> imagePickerLauncher;
 
@@ -49,6 +51,7 @@ public class ManageCategoriesActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerViewCategories);
         btnAddCategory = findViewById(R.id.btnAddCategory);
+        btnBack = findViewById(R.id.btnBack); // Liên kết với nút Back trong layout
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         imagePickerLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -60,6 +63,9 @@ public class ManageCategoriesActivity extends AppCompatActivity {
         loadCategories();
 
         btnAddCategory.setOnClickListener(v -> showAddEditDialog(null));
+
+        // Xử lý sự kiện khi nhấn nút Back
+        btnBack.setOnClickListener(v -> finish()); // Gọi finish() để quay lại màn hình trước đó
     }
 
     private void loadCategories() {
@@ -130,7 +136,6 @@ public class ManageCategoriesActivity extends AppCompatActivity {
                 addCategory(name, selectedImageUri);
             }
 
-            // Ẩn bàn phím trước khi đóng dialog
             InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 

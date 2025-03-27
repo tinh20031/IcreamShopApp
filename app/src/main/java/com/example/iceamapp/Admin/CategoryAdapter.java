@@ -48,12 +48,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         Category category = categoryList.get(position);
         holder.tvCategoryName.setText(category.getName());
 
-        // Load ảnh từ URL vào ImageView bằng Glide
+
         Glide.with(holder.itemView.getContext())
-                .load(category.getImage()) // URL ảnh từ API
-                .placeholder(R.drawable.logo) // Ảnh mặc định trong lúc tải
-                .error(R.drawable.ic_launcher_background) // Ảnh hiển thị nếu tải lỗi
-                .into(holder.imgCategoryImage); // Hiển thị trong ImageView
+                .load(category.getImage())
+                .placeholder(R.drawable.logo)
+                .error(R.drawable.ic_launcher_background)
+                .into(holder.imgCategoryImage);
 
         holder.btnEdit.setOnClickListener(v -> editClickListener.onEditClick(category));
         holder.btnDelete.setOnClickListener(v -> deleteClickListener.onDeleteClick(category));

@@ -20,7 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ChatbotManager {
     private static final String TAG = "ChatbotManager";
     private static final String BASE_URL = "https://generativelanguage.googleapis.com/v1beta/";
-    private static final String API_KEY = "AIzaSyB_-lTBXF95L6zHKv32Tkyko3_pLE3-6kQ"; // Thay bằng API Key Gemini của bạn
+    private static final String API_KEY = "AIzaSyB_-lTBXF95L6zHKv32Tkyko3_pLE3-6kQ";
     private final String MODEL = "gemini-2.0-flash";
 
     private GeminiApi geminiApi;

@@ -17,6 +17,7 @@ import com.example.iceamapp.R;
 import com.example.iceamapp.RetrofitClient;
 import com.example.iceamapp.Services.IceCreamApiService;
 import com.example.iceamapp.entity.IceCream;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.List;
 
@@ -28,7 +29,8 @@ public class ManageProductsActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private ProductAdapter productAdapter;
-    private Button btnAddProduct;
+    private MaterialButton btnAddProduct;
+    private MaterialButton btnBack; // Thêm biến cho nút Back
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +39,15 @@ public class ManageProductsActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerViewProducts);
         btnAddProduct = findViewById(R.id.btnAddProduct);
+        btnBack = findViewById(R.id.btnBack); // Liên kết với nút Back trong layout
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         loadProducts();
 
         btnAddProduct.setOnClickListener(v -> showAddEditDialog(null));
+
+        // Xử lý sự kiện khi nhấn nút Back
+        btnBack.setOnClickListener(v -> finish()); // Gọi finish() để quay lại màn hình trước đó
     }
 
     private void loadProducts() {

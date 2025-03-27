@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -27,9 +26,7 @@ import com.example.iceamapp.adapter.CartAdapter;
 import com.example.iceamapp.entity.Cart;
 import com.example.iceamapp.entity.CreatePaymentRequest;
 import com.example.iceamapp.entity.PaymentResponse;
-import com.google.gson.Gson;
 
-import org.json.JSONObject;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
@@ -55,7 +52,6 @@ public class SelectAddressActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private List<Cart> cartItems = new ArrayList<>();
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-    private static final String TAG = "SelectAddressActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +121,6 @@ public class SelectAddressActivity extends AppCompatActivity {
                         });
                     } catch (IOException e) {
                         runOnUiThread(() -> {
-                            Log.e(TAG, "Lỗi Geocoder: " + e.getMessage(), e);
                             Toast.makeText(SelectAddressActivity.this, "Không thể lấy địa chỉ từ tọa độ!", Toast.LENGTH_SHORT).show();
                         });
                     }
@@ -159,19 +154,9 @@ public class SelectAddressActivity extends AppCompatActivity {
                         progressBar.setVisibility(View.GONE);
                         if (addresses != null && !addresses.isEmpty()) {
                             Address address = addresses.get(0);
-                            Log.d(TAG, "Địa chỉ đầy đủ: " + address.getAddressLine(0));
-                            Log.d(TAG, "Phường/Xã: " + address.getSubLocality());
-                            Log.d(TAG, "Quận/Huyện: " + address.getLocality());
-                            Log.d(TAG, "Tỉnh/Thành phố: " + address.getAdminArea());
-
                             String ward = address.getSubLocality() != null ? address.getSubLocality() : "";
                             String district = address.getLocality() != null ? address.getLocality() : "";
                             String province = address.getAdminArea() != null ? address.getAdminArea() : "";
-
-                            Log.d(TAG, "Phường/Xã đã phân tích: " + ward);
-                            Log.d(TAG, "Quận/Huyện đã phân tích: " + district);
-                            Log.d(TAG, "Tỉnh/Thành phố đã phân tích: " + province);
-
                             proceedWithOrder(street, ward, district, province);
                         } else {
                             Toast.makeText(SelectAddressActivity.this, "Không thể lấy địa chỉ từ tọa độ!", Toast.LENGTH_SHORT).show();
@@ -180,7 +165,6 @@ public class SelectAddressActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     runOnUiThread(() -> {
                         progressBar.setVisibility(View.GONE);
-                        Log.e(TAG, "Lỗi Geocoder: " + e.getMessage(), e);
                         Toast.makeText(SelectAddressActivity.this, "Không thể lấy địa chỉ từ tọa độ!", Toast.LENGTH_SHORT).show();
                     });
                 }
@@ -239,15 +223,14 @@ public class SelectAddressActivity extends AppCompatActivity {
         // Tạo CreatePaymentRequest
         CreatePaymentRequest requestBody = new CreatePaymentRequest(shippingAddress);
 
-        Log.d(TAG, "Dữ liệu yêu cầu: " + new Gson().toJson(requestBody));
-
         CartApiService apiService = RetrofitClient.getCartApiService();
         progressBar.setVisibility(View.VISIBLE);
 
         // Gọi endpoint thanh toán VNPAY
-        Call<PaymentResponse> call = apiService.createOrderWithPaymentMethod(userId, requestBody); // Sửa Call<JSONObject> thành Call<PaymentResponse>
+        Call<PaymentResponse> call = apiService.createOrderWithPaymentMethod(userId, requestBody);
         handleOrderResponse(call);
     }
+
     private void handleOrderResponse(Call<PaymentResponse> call) {
         call.enqueue(new Callback<PaymentResponse>() {
             @Override
@@ -256,14 +239,11 @@ public class SelectAddressActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     PaymentResponse paymentResponse = response.body();
                     String orderUrl = paymentResponse.getOrderUrl();
-                    Log.d(TAG, "OrderUrl nhận được: " + orderUrl); // Thêm log để kiểm tra giá trị
                     if (orderUrl == null || orderUrl.isEmpty()) {
-                        Log.e(TAG, "OrderUrl rỗng hoặc null");
                         Toast.makeText(SelectAddressActivity.this, "Không nhận được URL thanh toán từ server!", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
-                    Log.d(TAG, "Nhận được OrderUrl: " + orderUrl);
                     Toast.makeText(SelectAddressActivity.this, "Đặt hàng thành công! Chuyển đến trang thanh toán VNPAY...", Toast.LENGTH_LONG).show();
 
                     Intent intent = new Intent(SelectAddressActivity.this, VNPayActivity.class);
@@ -272,18 +252,15 @@ public class SelectAddressActivity extends AppCompatActivity {
                 } else {
                     try {
                         String errorMessage = "Lỗi khi đặt hàng: " + response.code() + " - " + response.message();
-                        Log.e(TAG, errorMessage);
                         if (response.code() == 404) {
                             errorMessage = "Không tìm thấy dịch vụ đặt hàng trên server. Vui lòng kiểm tra kết nối hoặc liên hệ hỗ trợ.";
                         }
                         if (response.errorBody() != null) {
                             String errorBody = response.errorBody().string();
-                            Log.e(TAG, "Nội dung lỗi từ server: " + errorBody);
                             errorMessage += "\nChi tiết: " + errorBody;
                         }
                         Toast.makeText(SelectAddressActivity.this, errorMessage, Toast.LENGTH_LONG).show();
                     } catch (IOException e) {
-                        Log.e(TAG, "Lỗi khi phân tích nội dung lỗi: " + e.getMessage(), e);
                         Toast.makeText(SelectAddressActivity.this, "Lỗi khi đặt hàng: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -292,11 +269,12 @@ public class SelectAddressActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<PaymentResponse> call, Throwable t) {
                 progressBar.setVisibility(View.GONE);
-                Log.e(TAG, "Lỗi API đặt hàng: " + t.getMessage(), t);
                 Toast.makeText(SelectAddressActivity.this, "Lỗi khi đặt hàng: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-    }    private void requestLocationPermission() {
+    }
+
+    private void requestLocationPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
                 ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{
@@ -311,9 +289,9 @@ public class SelectAddressActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Quyền truy cập vị trí đã được cấp!", Toast.LENGTH_SHORT).show();
+
             } else {
-                Toast.makeText(this, "Quyền truy cập vị trí bị từ chối!", Toast.LENGTH_SHORT).show();
+
             }
         }
     }

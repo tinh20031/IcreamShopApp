@@ -9,6 +9,18 @@
     android:background="@color/splash_background"
     android:fitsSystemWindows="true">
 
+    <!-- Nút Quay lại -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnBack"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="← Quay lại"
+        android:textSize="14sp"
+        android:layout_gravity="start"
+        android:layout_marginBottom="16dp"
+        android:textColor="@android:color/black"/>
+
     <!-- Logo -->
     <ImageView
         android:id="@+id/imgLogo"
@@ -28,7 +40,6 @@
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:textColor="@android:color/black"/>
-
 
     <!-- Button thêm danh mục -->
     <com.google.android.material.button.MaterialButton

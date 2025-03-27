@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -40,7 +39,7 @@ public class ManageCategoriesActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private CategoryAdapter categoryAdapter;
     private MaterialButton btnAddCategory;
-    private MaterialButton btnBack; // Thêm biến cho nút Back
+    private MaterialButton btnBack;
     private Uri selectedImageUri;
     private ActivityResultLauncher<Intent> imagePickerLauncher;
 
@@ -51,7 +50,7 @@ public class ManageCategoriesActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerViewCategories);
         btnAddCategory = findViewById(R.id.btnAddCategory);
-        btnBack = findViewById(R.id.btnBack); // Liên kết với nút Back trong layout
+        btnBack = findViewById(R.id.btnBack);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         imagePickerLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -63,9 +62,7 @@ public class ManageCategoriesActivity extends AppCompatActivity {
         loadCategories();
 
         btnAddCategory.setOnClickListener(v -> showAddEditDialog(null));
-
-        // Xử lý sự kiện khi nhấn nút Back
-        btnBack.setOnClickListener(v -> finish()); // Gọi finish() để quay lại màn hình trước đó
+        btnBack.setOnClickListener(v -> finish());
     }
 
     private void loadCategories() {
@@ -86,7 +83,6 @@ public class ManageCategoriesActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<Category>> call, Throwable t) {
-                Log.e("ManageCategories", "Lỗi: " + t.getMessage());
                 Toast.makeText(ManageCategoriesActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -181,7 +177,7 @@ public class ManageCategoriesActivity extends AppCompatActivity {
                         try {
                             errorMessage = response.errorBody().string();
                         } catch (Exception e) {
-                            Log.e("AddCategory", "Lỗi phân tích errorBody: " + e.getMessage());
+                            // Không hiển thị lỗi phân tích errorBody bằng Toast
                         }
                     }
                     Toast.makeText(ManageCategoriesActivity.this, "Lỗi khi thêm danh mục: " + errorMessage, Toast.LENGTH_LONG).show();
@@ -231,7 +227,7 @@ public class ManageCategoriesActivity extends AppCompatActivity {
                         try {
                             errorMessage = response.errorBody().string();
                         } catch (Exception e) {
-                            Log.e("EditCategory", "Lỗi phân tích errorBody: " + e.getMessage());
+                            // Không hiển thị lỗi phân tích errorBody bằng Toast
                         }
                     }
                     Toast.makeText(ManageCategoriesActivity.this, "Lỗi khi sửa danh mục: " + errorMessage, Toast.LENGTH_LONG).show();
@@ -246,24 +242,44 @@ public class ManageCategoriesActivity extends AppCompatActivity {
     }
 
     private void deleteCategory(Category category) {
-        CategoryApiService apiService = RetrofitClient.getRetrofitInstance().create(CategoryApiService.class);
-        Call<Void> call = apiService.deleteCategory(category.getCategoryId());
+        // Hiển thị dialog xác nhận trước khi xóa
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Xác nhận xóa")
+                .setMessage("Bạn có chắc chắn muốn xóa danh mục '" + category.getName() + "' không?")
+                .setPositiveButton("OK", (dialogInterface, which) -> {
+                    // Nếu nhấn OK, gọi API xóa danh mục
+                    CategoryApiService apiService = RetrofitClient.getRetrofitInstance().create(CategoryApiService.class);
+                    Call<Void> call = apiService.deleteCategory(category.getCategoryId());
 
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(ManageCategoriesActivity.this, "Xóa danh mục thành công", Toast.LENGTH_SHORT).show();
-                    loadCategories();
-                } else {
-                    Toast.makeText(ManageCategoriesActivity.this, "Lỗi khi xóa danh mục: " + response.message(), Toast.LENGTH_SHORT).show();
-                }
-            }
+                    call.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            if (response.isSuccessful()) {
+                                Toast.makeText(ManageCategoriesActivity.this, "Xóa danh mục thành công", Toast.LENGTH_SHORT).show();
+                                loadCategories();
+                            } else {
+                                Toast.makeText(ManageCategoriesActivity.this, "Lỗi khi xóa danh mục: " + response.message(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
 
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(ManageCategoriesActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Toast.makeText(ManageCategoriesActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                })
+                .setNegativeButton("Cancel", (dialogInterface, which) -> {
+                    // Nếu nhấn Cancel, đóng dialog và không làm gì cả
+                    dialogInterface.dismiss();
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .create();
+
+        // Hiển thị dialog
+        dialog.show();
+
+        // Đặt màu đen cho nút "OK" và "Cancel"
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(android.R.color.black));
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(android.R.color.black));
     }
 }

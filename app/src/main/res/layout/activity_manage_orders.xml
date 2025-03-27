@@ -6,6 +6,7 @@
     android:orientation="vertical"
     android:padding="16dp"
     android:gravity="center_horizontal"
+    android:fitsSystemWindows="true"
     android:background="@color/splash_background">
 
     <!-- Nút Quay lại -->

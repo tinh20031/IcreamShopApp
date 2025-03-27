@@ -57,7 +57,7 @@
                     android:layout_height="40dp"
                     android:text="Sửa"
                     android:textSize="14sp"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:background="@drawable/button_rounded"
                     android:layout_marginEnd="8dp"/>
 
@@ -67,7 +67,7 @@
                     android:layout_height="40dp"
                     android:text="Xóa"
                     android:textSize="14sp"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:background="@drawable/button_rounded"/>
             </LinearLayout>
 

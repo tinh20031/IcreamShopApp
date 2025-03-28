@@ -90,6 +90,7 @@
         <activity android:name=".Admin.ManageProductsActivity" />
         <activity android:name=".Admin.ManageOrdersActivity" />
         <activity android:name=".Admin.ManageCategoriesActivity" />
+        <activity android:name=".Admin.OrderDetailActivity" />
         <activity android:name=".Activity.ChatActivityRealtime"/>
     </application>
 

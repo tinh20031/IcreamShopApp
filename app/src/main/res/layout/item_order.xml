@@ -3,82 +3,51 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="12dp"
+    android:padding="8dp"
     android:background="@drawable/order_background"
-    android:elevation="4dp"
-    android:layout_margin="8dp"
-    android:radius="12dp"
-    android:clipToOutline="true">
+    android:layout_marginBottom="8dp">
 
-    <!-- Mã đơn hàng + Ngày đặt -->
-    <LinearLayout
-        android:layout_width="match_parent"
+    <!-- Thông tin đơn hàng -->
+    <TextView
+        android:id="@+id/txtOrderId"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:text="Mã đơn hàng: #1"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#000"/>
 
-        <TextView
-            android:id="@+id/txtOrderId"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Mã đơn: #12345 "
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"/>
+    <TextView
+        android:id="@+id/txtOrderDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ngày đặt: 2025-03-09 12:34:56"
+        android:textSize="14sp"
+        android:textColor="#555"/>
 
-        <TextView
-            android:id="@+id/txtOrderDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="2025-03-27 "
-            android:textColor="@color/black"
-            android:textSize="14sp" />
-    </LinearLayout>
-
-    <!-- Trạng thái đơn hàng -->
     <TextView
         android:id="@+id/txtStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="🟡 Đang xử lý"
+        android:text="Trạng thái: Pending"
         android:textSize="14sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:layout_marginTop="4dp"/>
+        android:textColor="#555"/>
 
-    <!-- Danh sách sản phẩm -->
+    <!-- Danh sách chi tiết đơn hàng -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewOrderDetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:nestedScrollingEnabled="false"
-        android:layout_marginTop="6dp"/>
+        android:nestedScrollingEnabled="false"/>
 
-    <!-- Tổng tiền + Button hành động -->
-    <LinearLayout
-        android:layout_width="match_parent"
+    <!-- Tổng tiền -->
+    <TextView
+        android:id="@+id/txtTotalPrice"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="bottom"
-        android:layout_marginTop="8dp">
-
-        <TextView
-            android:id="@+id/txtTotalPrice"
-            android:layout_width="120dp"
-            android:layout_height="40dp"
-            android:text="150,000 VND"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"/>
-
-        <Button
-            android:id="@+id/btnViewDetails"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/black"
-            android:text="Xem chi tiết"
-            android:textColor="@color/white"
-            android:textSize="14sp" />
-    </LinearLayout>
-
+        android:text="Tổng tiền: 150,000 VND"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#E91E63"
+        android:layout_marginTop="8dp"/>
 </LinearLayout>
